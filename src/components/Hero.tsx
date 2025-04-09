@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef } from 'react';
-import { Circuit, Code, Cpu, Database, Server } from 'lucide-react';
+import { Code, Cpu, Database, Server, CircuitBoard } from 'lucide-react';
 
 export const Hero: React.FC = () => {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -33,7 +33,7 @@ export const Hero: React.FC = () => {
           <Code size={48} />
         </div>
         <div className="absolute top-[20%] left-[80%] animate-float animation-delay-1000 text-primary/20">
-          <Circuit size={48} />
+          <CircuitBoard size={48} />
         </div>
         <div className="absolute top-[60%] left-[20%] animate-float animation-delay-2000 text-primary/20">
           <Cpu size={48} />
