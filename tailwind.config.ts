@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -26,16 +25,16 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
-					DEFAULT: '#2563EB', // JimmyDev primary blue
+					DEFAULT: '#ED422A', // JimmyDev primary red
 					foreground: 'hsl(var(--primary-foreground))'
 				},
 				secondary: {
-					DEFAULT: '#22C55E', // JimmyDev secondary green
-					cyan: '#06B6D4', // JimmyDev secondary cyan
+					DEFAULT: '#1A2B47', // JimmyDev secondary dark blue
+					cyan: '#06B6D4', // Keep this blue as an accent
 					foreground: 'hsl(var(--secondary-foreground))'
 				},
 				neutral: {
-					DEFAULT: '#1F2937', // JimmyDev neutral dark gray
+					DEFAULT: '#1A2B47', // JimmyDev dark blue for neutral text
 				},
 				destructive: {
 					DEFAULT: 'hsl(var(--destructive))',
@@ -69,7 +68,7 @@ export default {
 				}
 			},
 			backgroundImage: {
-				'gradient-primary': 'linear-gradient(to right, #22C55E, #06B6D4)',
+				'gradient-primary': 'linear-gradient(to right, #ED422A, #1A2B47)',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

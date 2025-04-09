@@ -12,7 +12,11 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-sm shadow-sm">
         <div className="container-custom py-4 flex justify-between items-center">
           <a href="/" className="flex items-center">
-            <span className="text-2xl font-bold text-primary">Jimmy<span className="text-gradient-primary">Dev</span></span>
+            <img 
+              src="/lovable-uploads/35f90851-3845-49d7-bf24-cbdccf2974b6.png" 
+              alt="JimmyDev Logo" 
+              className="h-10 w-auto"
+            />
           </a>
           <nav className="hidden md:flex space-x-8 items-center">
             <a href="#services" className="text-neutral hover:text-primary transition-colors">Serviços</a>
@@ -35,11 +39,17 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
 
       <FloatingForm />
       
-      <footer className="bg-neutral text-white py-12">
+      <footer className="bg-secondary text-white py-12">
         <div className="container-custom">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-xl font-bold mb-4">JimmyDev</h3>
+              <div className="mb-4">
+                <img 
+                  src="/lovable-uploads/35f90851-3845-49d7-bf24-cbdccf2974b6.png" 
+                  alt="JimmyDev Logo" 
+                  className="h-12 w-auto"
+                />
+              </div>
               <p className="text-gray-300 mb-4">Transforme sua visão em tecnologia poderosa.</p>
               <div className="flex space-x-4">
                 <a href="#" className="text-white hover:text-primary transition-colors">
