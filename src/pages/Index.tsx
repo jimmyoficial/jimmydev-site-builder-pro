@@ -4,6 +4,7 @@ import { Layout } from '@/components/Layout';
 import { Hero } from '@/components/Hero';
 import { Services } from '@/components/Services';
 import { Simulator } from '@/components/Simulator';
+import { MobileAppSimulator } from '@/components/MobileAppSimulator';
 import { Differentials } from '@/components/Differentials';
 import { FaqSection } from '@/components/FaqSection';
 import { IntermediateCta, FinalCta } from '@/components/CallToAction';
@@ -48,6 +49,7 @@ const Index = () => {
       <Hero />
       <Services />
       <Simulator />
+      <MobileAppSimulator />
       <SocialProof />
       <Differentials />
       <IntermediateCta />

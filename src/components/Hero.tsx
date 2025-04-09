@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef } from 'react';
-import { Code, Cpu, Database, Server, CircuitBoard } from 'lucide-react';
+import { Code, Cpu, Database, Server, CircuitBoard, Smartphone, Laptop } from 'lucide-react';
 
 export const Hero: React.FC = () => {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -27,22 +27,28 @@ export const Hero: React.FC = () => {
 
   return (
     <div ref={heroRef} className="bg-white relative overflow-hidden">
-      {/* Floating tech icons animation */}
+      {/* 3D floating tech icons animation */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[10%] left-[10%] animate-float text-primary/20">
+        <div className="absolute top-[10%] left-[10%] animate-float perspective-icon text-primary/20">
           <Code size={48} />
         </div>
-        <div className="absolute top-[20%] left-[80%] animate-float animation-delay-1000 text-primary/20">
+        <div className="absolute top-[20%] left-[80%] animate-float animation-delay-1000 perspective-icon text-primary/20">
           <CircuitBoard size={48} />
         </div>
-        <div className="absolute top-[60%] left-[20%] animate-float animation-delay-2000 text-primary/20">
+        <div className="absolute top-[60%] left-[20%] animate-float animation-delay-2000 perspective-icon text-primary/20">
           <Cpu size={48} />
         </div>
-        <div className="absolute top-[70%] left-[70%] animate-float animation-delay-3000 text-primary/20">
+        <div className="absolute top-[70%] left-[70%] animate-float animation-delay-3000 perspective-icon text-primary/20">
           <Database size={48} />
         </div>
-        <div className="absolute top-[40%] left-[50%] animate-float animation-delay-4000 text-primary/20">
+        <div className="absolute top-[40%] left-[50%] animate-float animation-delay-4000 perspective-icon text-primary/20">
           <Server size={48} />
+        </div>
+        <div className="absolute top-[30%] left-[30%] animate-float animation-delay-2500 perspective-icon text-primary/20">
+          <Smartphone size={48} />
+        </div>
+        <div className="absolute top-[50%] left-[85%] animate-float animation-delay-3500 perspective-icon text-primary/20">
+          <Laptop size={48} />
         </div>
       </div>
       
