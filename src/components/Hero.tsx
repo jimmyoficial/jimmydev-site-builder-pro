@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef } from 'react';
-import { Code, Cpu, Database, Server, CircuitBoard, Smartphone, Laptop } from 'lucide-react';
+import { Code, Cpu, Database, Server, CircuitBoard, Smartphone, Laptop, LineChart, BarChart3, PieChart } from 'lucide-react';
 
 export const Hero: React.FC = () => {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -27,28 +27,37 @@ export const Hero: React.FC = () => {
 
   return (
     <div ref={heroRef} className="bg-white relative overflow-hidden">
-      {/* 3D floating tech icons animation */}
+      {/* Professional 3D floating tech icons animation */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[10%] left-[10%] animate-float perspective-icon text-primary/20">
+        <div className="absolute top-[10%] left-[10%] animate-float perspective-icon text-primary/15">
           <Code size={48} />
         </div>
-        <div className="absolute top-[20%] left-[80%] animate-float animation-delay-1000 perspective-icon text-primary/20">
+        <div className="absolute top-[20%] left-[80%] animate-float animation-delay-1000 perspective-icon text-primary/15">
           <CircuitBoard size={48} />
         </div>
-        <div className="absolute top-[60%] left-[20%] animate-float animation-delay-2000 perspective-icon text-primary/20">
+        <div className="absolute top-[60%] left-[20%] animate-float animation-delay-2000 perspective-icon text-primary/15">
           <Cpu size={48} />
         </div>
-        <div className="absolute top-[70%] left-[70%] animate-float animation-delay-3000 perspective-icon text-primary/20">
+        <div className="absolute top-[70%] left-[70%] animate-float animation-delay-3000 perspective-icon text-primary/15">
           <Database size={48} />
         </div>
-        <div className="absolute top-[40%] left-[50%] animate-float animation-delay-4000 perspective-icon text-primary/20">
+        <div className="absolute top-[40%] left-[50%] animate-float animation-delay-4000 perspective-icon text-primary/15">
           <Server size={48} />
         </div>
-        <div className="absolute top-[30%] left-[30%] animate-float animation-delay-2500 perspective-icon text-primary/20">
+        <div className="absolute top-[30%] left-[30%] animate-float animation-delay-2500 perspective-icon text-primary/15">
           <Smartphone size={48} />
         </div>
-        <div className="absolute top-[50%] left-[85%] animate-float animation-delay-3500 perspective-icon text-primary/20">
+        <div className="absolute top-[50%] left-[85%] animate-float animation-delay-3500 perspective-icon text-primary/15">
           <Laptop size={48} />
+        </div>
+        <div className="absolute top-[15%] left-[55%] animate-float animation-delay-1800 perspective-icon text-primary/15">
+          <BarChart3 size={48} />
+        </div>
+        <div className="absolute top-[45%] left-[15%] animate-float animation-delay-2700 perspective-icon text-primary/15">
+          <LineChart size={48} />
+        </div>
+        <div className="absolute top-[65%] left-[45%] animate-float animation-delay-3200 perspective-icon text-primary/15">
+          <PieChart size={48} />
         </div>
       </div>
       
@@ -61,26 +70,26 @@ export const Hero: React.FC = () => {
             Transforme sua visão em <span className="gradient-text">tecnologia poderosa</span>
           </h2>
           <p className="text-lg md:text-xl text-neutral/80 mb-8 animate-on-scroll" style={{animationDelay: '400ms'}}>
-            Desenvolvimento de aplicativos, softwares e plataformas sob medida para alavancar seus resultados
+            Desenvolvimento de aplicativos, softwares e plataformas sob medida para alavancar seus resultados e impulsionar sua empresa
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4 animate-on-scroll" style={{animationDelay: '600ms'}}>
             <a href="#contact" className="btn-primary">
-              Quero meu projeto personalizado
+              Solicitar consultoria especializada
             </a>
             <a href="#simulator" className="btn-outline">
-              Experimente o simulador
+              Experimentar simulador
             </a>
           </div>
         </div>
         
         <div className="mt-16 animate-on-scroll" style={{animationDelay: '800ms'}}>
-          <div className="bg-gradient-to-b from-white/0 to-white/80 py-6 rounded-lg text-center">
-            <p className="text-neutral/60 mb-2">Confiado por empresas de todos os tamanhos</p>
+          <div className="bg-gradient-to-b from-white/0 to-white/80 py-8 rounded-lg text-center">
+            <p className="text-neutral/60 mb-4">Soluções confiadas por empresas de todos os portes</p>
             <div className="flex flex-wrap justify-center gap-8 md:gap-16">
-              <div className="text-neutral/40 font-bold text-xl">EMPRESA A</div>
-              <div className="text-neutral/40 font-bold text-xl">EMPRESA B</div>
-              <div className="text-neutral/40 font-bold text-xl">EMPRESA C</div>
-              <div className="text-neutral/40 font-bold text-xl">EMPRESA D</div>
+              <div className="text-neutral/50 font-bold text-lg">EMPRESA ALPHA</div>
+              <div className="text-neutral/50 font-bold text-lg">CORPORAÇÃO BETA</div>
+              <div className="text-neutral/50 font-bold text-lg">GRUPO GAMMA</div>
+              <div className="text-neutral/50 font-bold text-lg">DELTA CORP</div>
             </div>
           </div>
         </div>
