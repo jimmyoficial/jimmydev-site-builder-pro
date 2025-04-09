@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -21,7 +20,8 @@ import {
   Heart, 
   MessageSquare,
   BookOpen,
-  PlusCircle
+  PlusCircle,
+  Share2
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -448,24 +448,22 @@ export const MobileAppSimulator: React.FC = () => {
       <div className="flex-1 overflow-auto pb-4">
         <div className="relative h-60 mb-6">
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black"></div>
-          <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
-            <div 
-              className="h-full w-full relative"
-              style={{ backgroundColor: config.primaryColor }}
-            >
-              <div className="absolute inset-0 opacity-30">
-                {/* Corporate pattern */}
-                <div className="grid grid-cols-4 grid-rows-4 h-full w-full">
-                  {Array.from({length: 16}).map((_, i) => (
-                    <div key={i} className="border border-white/10 flex items-center justify-center">
-                      {i % 5 === 0 && <div className="w-8 h-8 rounded-full bg-white/10"></div>}
-                    </div>
-                  ))}
-                </div>
+          <div 
+            className="h-44 flex items-center justify-center relative"
+            style={{ backgroundColor: config.primaryColor }}
+          >
+            <div className="absolute inset-0 opacity-30">
+              {/* Corporate pattern */}
+              <div className="grid grid-cols-4 grid-rows-4 h-full w-full">
+                {Array.from({length: 16}).map((_, i) => (
+                  <div key={i} className="border border-white/10 flex items-center justify-center">
+                    {i % 5 === 0 && <div className="w-8 h-8 rounded-full bg-white/10"></div>}
+                  </div>
+                ))}
               </div>
             </div>
+            <div className="text-4xl text-white">🎥</div>
           </div>
-          
           <div className="absolute bottom-0 left-0 right-0 p-5 z-10">
             <div className="flex items-start mb-3">
               <div 
@@ -846,8 +844,15 @@ export const MobileAppSimulator: React.FC = () => {
           className="absolute inset-0 flex items-center justify-center"
           style={{ backgroundColor: `${primaryColor}30` }}
         >
-          <div className="h-full w-full p-6 flex items-center justify-center">
-            {icon}
+          <div className="h-full w-full rounded-full flex items-center justify-center overflow-hidden"
+            style={{ backgroundColor: 'white' }}
+          >
+            <div 
+              className="h-10 w-10 rounded-full flex items-center justify-center" 
+              style={{ backgroundColor: `${primaryColor}20` }}
+            >
+              {icon}
+            </div>
           </div>
         </div>
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
@@ -1026,7 +1031,7 @@ export const MobileAppSimulator: React.FC = () => {
               <MessageSquare size={22} />
             </button>
             <button className="text-gray-700">
-              <Share size={22} className="-scale-x-100" />
+              <Share2 size={22} className="-scale-x-100" />
             </button>
           </div>
           <button className="text-gray-700">
