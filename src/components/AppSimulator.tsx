@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -36,7 +37,8 @@ import { FitnessApp } from './app-templates/FitnessApp';
 export const AppSimulator: React.FC = () => {
   const [config, setConfig] = useLocalStorage<AppSimulatorConfig>('jimmydev-app-simulator', defaultConfig);
   const [viewMode, setViewMode] = useState<'device' | 'analytics'>('device');
-  const [fileInput, setFileInput] = useState<HTMLInputElement | null>(null);
+  // Replace state management of fileInput with useRef
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [imageUploadType, setImageUploadType] = useState<'logo' | 'custom'>('logo');
   const [customImageKey, setCustomImageKey] = useState<string>('');
   const [showGuide, setShowGuide] = useState(false);
@@ -250,7 +252,8 @@ export const AppSimulator: React.FC = () => {
       if (type === 'custom' && imageKey) {
         setCustomImageKey(imageKey);
       }
-      fileInput?.click();
+      // Use the ref instead of state
+      fileInputRef.current?.click();
     };
     
     // Safely access customImages with fallbacks
@@ -292,7 +295,7 @@ export const AppSimulator: React.FC = () => {
         )}
         <input 
           type="file" 
-          ref={(input) => setFileInput(input)} 
+          ref={fileInputRef}
           className="hidden" 
           accept="image/*" 
           onChange={handleLogoUpload} 
