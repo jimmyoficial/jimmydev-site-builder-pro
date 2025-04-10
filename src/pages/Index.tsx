@@ -3,8 +3,7 @@ import React, { useEffect } from 'react';
 import { Layout } from '@/components/Layout';
 import { Hero } from '@/components/Hero';
 import { Services } from '@/components/Services';
-import { Simulator } from '@/components/Simulator';
-import { MobileAppSimulator } from '@/components/MobileAppSimulator';
+import { AppSimulator } from '@/components/AppSimulator';
 import { Differentials } from '@/components/Differentials';
 import { FaqSection } from '@/components/FaqSection';
 import { IntermediateCta, FinalCta } from '@/components/CallToAction';
@@ -48,8 +47,7 @@ const Index = () => {
     <Layout>
       <Hero />
       <Services />
-      <Simulator />
-      <MobileAppSimulator />
+      <AppSimulator />
       <SocialProof />
       <Differentials />
       <IntermediateCta />

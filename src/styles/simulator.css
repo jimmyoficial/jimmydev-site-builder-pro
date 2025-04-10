@@ -1,0 +1,168 @@
+
+/* Device frame styling */
+.device-frame {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  transform: rotateY(0deg) rotateX(0deg);
+  transition: transform 0.5s ease;
+}
+
+.device-frame:hover {
+  transform: rotateY(-5deg) rotateX(2deg);
+}
+
+/* Animation for elements */
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.animate-on-scroll.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* iPhone frame styles */
+.iphone-frame {
+  position: relative;
+  width: 375px;
+  height: 800px;
+  background-color: #1a1a1a;
+  border-radius: 52px;
+  box-shadow: 0 50px 100px rgba(0,0,0,0.25);
+  padding: 12px;
+  transform: perspective(1000px) rotateY(0deg);
+  transition: transform 0.3s ease;
+  overflow: hidden;
+}
+
+.iphone-frame:hover {
+  transform: perspective(1000px) rotateY(-5deg);
+}
+
+.iphone-screen {
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  border-radius: 42px;
+  overflow: hidden;
+  position: relative;
+}
+
+.iphone-notch {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 30px;
+  background-color: #1a1a1a;
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+  z-index: 10;
+}
+
+/* Interactive elements */
+.btn-primary {
+  background-color: #ED422A;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:hover {
+  background-color: #D53A25;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.btn-outline {
+  border: 1px solid #E5E7EB;
+  color: #1A2B47;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-outline:hover {
+  border-color: #D1D5DB;
+  background-color: #F9FAFB;
+}
+
+/* Animation delays */
+.animation-delay-500 {
+  animation-delay: 500ms;
+}
+
+.animation-delay-1000 {
+  animation-delay: 1000ms;
+}
+
+.animation-delay-1500 {
+  animation-delay: 1500ms;
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(90deg, #ED422A, #1A2B47);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline;
+}
+
+/* Container custom */
+.container-custom {
+  width: 100%;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Section padding */
+.section-padding {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+
+@media (min-width: 768px) {
+  .section-padding {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-padding {
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+  }
+}
+
+/* Perspective icon */
+.perspective-icon {
+  transform: perspective(800px) rotateY(15deg) rotateX(5deg);
+  transition: transform 0.6s ease;
+}
+
+.perspective-icon:hover {
+  transform: perspective(800px) rotateY(-15deg) rotateX(-5deg);
+}
