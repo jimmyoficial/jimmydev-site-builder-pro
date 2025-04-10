@@ -800,7 +800,7 @@ export const AppSimulator: React.FC = () => {
                 </div>
               </div>
               
-              <div className="h-[680px] overflow-auto bg-slate-100 rounded-lg p-4">
+              <div className="h-[800px] overflow-auto bg-slate-100 rounded-lg p-4">
                 {viewMode === 'device' ? renderDeviceContent() : <AnalyticsPanel />}
               </div>
             </div>

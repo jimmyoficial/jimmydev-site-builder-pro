@@ -166,3 +166,16 @@
 .perspective-icon:hover {
   transform: perspective(800px) rotateY(-15deg) rotateX(-5deg);
 }
+
+/* Device screen media query for better responsiveness */
+@media (min-height: 900px) {
+  .device-frame {
+    transform: scale(1.1);
+  }
+}
+
+@media (min-height: 1000px) {
+  .device-frame {
+    transform: scale(1.2);
+  }
+}
