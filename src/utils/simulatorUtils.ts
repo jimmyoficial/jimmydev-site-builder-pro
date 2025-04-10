@@ -22,7 +22,11 @@ export const defaultConfig: AppSimulatorConfig = {
   appName: 'JimmyDev App',
   deviceModel: 'iphone14',
   darkMode: false,
-  customImages: {}
+  customImages: {
+    // Initialize with empty values to prevent undefined errors
+    post1: '',
+    product1: ''
+  }
 };
 
 export const templates = {

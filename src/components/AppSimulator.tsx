@@ -55,6 +55,16 @@ export const AppSimulator: React.FC = () => {
     }
   }, [config.deviceModel]);
 
+  // Ensure customImages object is always initialized
+  useEffect(() => {
+    if (!config.customImages) {
+      setConfig({
+        ...config,
+        customImages: {}
+      });
+    }
+  }, [config]);
+
   // Detect when the section is visible
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -107,12 +117,14 @@ export const AppSimulator: React.FC = () => {
         });
         toast.success('Logo carregado com sucesso!');
       } else if (imageUploadType === 'custom' && customImageKey) {
+        const updatedCustomImages = {
+          ...config.customImages,
+          [customImageKey]: e.target?.result as string
+        };
+        
         setConfig({
           ...config,
-          customImages: {
-            ...config.customImages,
-            [customImageKey]: e.target?.result as string
-          }
+          customImages: updatedCustomImages
         });
         toast.success(`Imagem personalizada carregada com sucesso!`);
       }
@@ -141,12 +153,14 @@ export const AppSimulator: React.FC = () => {
         });
         toast.success('Logo carregado com sucesso!');
       } else if (imageUploadType === 'custom' && customImageKey) {
+        const updatedCustomImages = {
+          ...config.customImages,
+          [customImageKey]: e.target?.result as string
+        };
+        
         setConfig({
           ...config,
-          customImages: {
-            ...config.customImages,
-            [customImageKey]: e.target?.result as string
-          }
+          customImages: updatedCustomImages
         });
         toast.success(`Imagem personalizada carregada com sucesso!`);
       }
@@ -239,9 +253,11 @@ export const AppSimulator: React.FC = () => {
       fileInput?.click();
     };
     
+    // Safely access customImages with fallbacks
+    const customImages = config.customImages || {};
     const currentImage = type === 'logo' 
       ? config.logo 
-      : (imageKey ? config.customImages[imageKey] : null);
+      : (imageKey ? customImages[imageKey] || null : null);
     
     return (
       <div 
@@ -418,7 +434,7 @@ export const AppSimulator: React.FC = () => {
             <div className="bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg border border-gray-200">
               <div className="flex items-center">
                 <div 
-                  className="h-6 w-6 rounded-full mr-2 flex items-center justify-center text-white font-bold text-xs"
+                  className="h-6 w-6 rounded-full bg-white mr-2 flex items-center justify-center text-white font-bold text-xs"
                   style={{ backgroundColor: config.primaryColor }}
                 >
                   {demoStep}
