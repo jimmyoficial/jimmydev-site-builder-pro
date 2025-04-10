@@ -15,7 +15,8 @@ import {
   Moon,
   Sun,
   Share2,
-  Image
+  Image,
+  Play
 } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { toast } from 'sonner';

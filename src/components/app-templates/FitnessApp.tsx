@@ -5,7 +5,7 @@ import {
   Home, BarChart, Calendar, Settings, User,
   Play, Pause, ChevronLeft, Award, Clock,
   Heart, ChevronRight, ArrowRight, Bell, 
-  Zap, Check, X
+  Zap, Check, X, Plus
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { trackEvent } from '@/utils/simulatorUtils';
