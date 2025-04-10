@@ -85,18 +85,6 @@ export const Hero: React.FC = () => {
             </a>
           </div>
         </div>
-        
-        <div className="mt-16 animate-on-scroll" style={{animationDelay: '800ms'}}>
-          <div className="bg-gradient-to-b from-white/0 to-white/80 py-8 rounded-lg text-center">
-            <p className="text-neutral/60 mb-4">Soluções confiadas por empresas de todos os portes</p>
-            <div className="flex flex-wrap justify-center gap-8 md:gap-16">
-              <div className="text-neutral/50 font-bold text-lg">EMPRESA ALPHA</div>
-              <div className="text-neutral/50 font-bold text-lg">CORPORAÇÃO BETA</div>
-              <div className="text-neutral/50 font-bold text-lg">GRUPO GAMMA</div>
-              <div className="text-neutral/50 font-bold text-lg">DELTA CORP</div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
