@@ -45,6 +45,17 @@ export const AppSimulator: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const deviceRef = useRef<HTMLDivElement>(null);
 
+  // Ensure the device model exists in our deviceModels object, otherwise use the default
+  useEffect(() => {
+    if (!deviceModels[config.deviceModel]) {
+      console.warn(`Device model ${config.deviceModel} not found, using default`);
+      setConfig(prev => ({
+        ...prev,
+        deviceModel: defaultConfig.deviceModel
+      }));
+    }
+  }, [config.deviceModel, setConfig]);
+
   // Detect when the section is visible
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -390,7 +401,9 @@ export const AppSimulator: React.FC = () => {
       }
     };
     
-    const deviceStyle = deviceModels[config.deviceModel];
+    // Make sure we have a valid device model, defaulting to the first one if needed
+    const deviceModel = config.deviceModel;
+    const deviceStyle = deviceModels[deviceModel] || deviceModels.iphone14;
     
     return (
       <div className="h-full flex items-center justify-center relative" ref={deviceRef}>
@@ -772,4 +785,3 @@ export const AppSimulator: React.FC = () => {
     </section>
   );
 };
-
