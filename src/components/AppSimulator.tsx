@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -49,12 +48,12 @@ export const AppSimulator: React.FC = () => {
   useEffect(() => {
     if (!deviceModels[config.deviceModel]) {
       console.warn(`Device model ${config.deviceModel} not found, using default`);
-      setConfig(prev => ({
-        ...prev,
+      setConfig({
+        ...config,
         deviceModel: defaultConfig.deviceModel
-      }));
+      });
     }
-  }, [config.deviceModel, setConfig]);
+  }, [config.deviceModel]);
 
   // Detect when the section is visible
   useEffect(() => {
@@ -403,7 +402,14 @@ export const AppSimulator: React.FC = () => {
     
     // Make sure we have a valid device model, defaulting to the first one if needed
     const deviceModel = config.deviceModel;
-    const deviceStyle = deviceModels[deviceModel] || deviceModels.iphone14;
+    
+    // Ensure we have a valid device model by checking if it exists
+    if (!deviceModels[deviceModel]) {
+      console.warn(`Invalid device model: ${deviceModel}, using default`);
+      return <div>Loading device...</div>; // Show a loading state while we wait for the useEffect to fix the model
+    }
+    
+    const deviceStyle = deviceModels[deviceModel];
     
     return (
       <div className="h-full flex items-center justify-center relative" ref={deviceRef}>

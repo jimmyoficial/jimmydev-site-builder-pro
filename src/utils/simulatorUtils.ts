@@ -1,4 +1,3 @@
-
 import { toast } from 'sonner';
 
 export type AppTemplate = 'ecommerce' | 'social' | 'fitness' | 'delivery' | 'finance';
@@ -97,7 +96,10 @@ export const deviceModels = {
   }
 };
 
-// Funções para compartilhar estatísticas de uso e salvar configurações
+export const isValidDeviceModel = (model: string): model is DeviceModel => {
+  return Object.keys(deviceModels).includes(model as DeviceModel);
+};
+
 export const generateUsageReport = () => {
   return {
     screensViewed: Math.floor(Math.random() * 12) + 3,
@@ -124,8 +126,6 @@ export const saveAsTemplate = () => {
   toast.success('Configuração salva como modelo personalizado!');
 };
 
-// Funções de analytics simuladas
 export const trackEvent = (eventName: string, eventData: Record<string, any> = {}) => {
   console.log(`Analytics event tracked: ${eventName}`, eventData);
 };
-
