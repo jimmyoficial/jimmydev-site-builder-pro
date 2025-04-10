@@ -1,74 +1,88 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ArrowRight, CodeXml, ShoppingBag, Users, Activity, HeartPulse, TrendingUp } from 'lucide-react';
 
-interface CounterProps {
-  end: number;
-  duration: number;
-  label: string;
-  suffix?: string;
+interface ProjectSuggestionProps {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  color: string;
 }
 
-const Counter: React.FC<CounterProps> = ({ end, duration, label, suffix = '' }) => {
-  const [count, setCount] = useState(0);
-  const counterRef = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (counterRef.current) {
-      observer.observe(counterRef.current);
-    }
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!isVisible) return;
-
-    let startTimestamp: number | null = null;
-    const step = (timestamp: number) => {
-      if (!startTimestamp) startTimestamp = timestamp;
-      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-      setCount(Math.floor(progress * end));
-
-      if (progress < 1) {
-        window.requestAnimationFrame(step);
-      }
-    };
-
-    window.requestAnimationFrame(step);
-  }, [end, duration, isVisible]);
-
+const ProjectSuggestion: React.FC<ProjectSuggestionProps> = ({ icon, title, description, color }) => {
   return (
-    <div ref={counterRef} className="flex flex-col items-center">
-      <div className="text-4xl md:text-5xl font-bold text-primary mb-2">
-        {count}{suffix}
+    <div className="bg-white rounded-xl shadow-sm p-6 transition-all duration-300 hover:shadow-md hover:translate-y-[-5px]">
+      <div className="mb-4 p-3 rounded-lg inline-block" style={{ backgroundColor: `${color}25` }}>
+        <div className="text-white p-2 rounded-lg" style={{ backgroundColor: color }}>
+          {icon}
+        </div>
       </div>
-      <div className="text-neutral/80">{label}</div>
+      <h3 className="text-xl font-bold mb-2">{title}</h3>
+      <p className="text-gray-600 mb-4">{description}</p>
+      <button 
+        className="flex items-center text-sm font-medium"
+        style={{ color }}
+      >
+        Explorar ideia <ArrowRight size={16} className="ml-1" />
+      </button>
     </div>
   );
 };
 
 export const SocialProof: React.FC = () => {
   return (
-    <section className="py-16 bg-gradient-primary">
+    <section className="py-16 bg-slate-50">
       <div className="container-custom">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center text-white">
-          <Counter end={150} duration={2000} label="Projetos entregues" suffix="+" />
-          <Counter end={98} duration={2000} label="Clientes satisfeitos" suffix="%" />
-          <Counter end={12} duration={2000} label="Anos de experiência" />
-          <Counter end={24} duration={2000} label="Profissionais" />
+        <div className="text-center max-w-3xl mx-auto mb-12">
+          <h2 className="text-3xl font-bold mb-4">Sugestões de projetos</h2>
+          <p className="text-gray-600">
+            Explore essas ideias de aplicativos corporativos para inspirar seu próximo projeto
+          </p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <ProjectSuggestion 
+            icon={<ShoppingBag size={24} />} 
+            title="E-commerce B2B" 
+            color="#4F46E5"
+            description="Plataforma de comércio para transações entre empresas com catálogos personalizados e preços por volume." 
+          />
+          
+          <ProjectSuggestion 
+            icon={<Users size={24} />} 
+            title="Intranet Corporativa" 
+            color="#0EA5E9"
+            description="Rede interna para comunicação, compartilhamento de documentos e colaboração entre departamentos." 
+          />
+          
+          <ProjectSuggestion 
+            icon={<HeartPulse size={24} />} 
+            title="Bem-estar Corporativo" 
+            color="#10B981"
+            description="Aplicativo para promover saúde e bem-estar dos colaboradores com desafios e recompensas." 
+          />
+          
+          <ProjectSuggestion 
+            icon={<CodeXml size={24} />} 
+            title="Gestor de Projetos" 
+            color="#F59E0B"
+            description="Ferramenta de gerenciamento de projetos com acompanhamento de tarefas e colaboração em tempo real." 
+          />
+          
+          <ProjectSuggestion 
+            icon={<Activity size={24} />} 
+            title="Dashboard Analítico" 
+            color="#EC4899"
+            description="Visualização de dados empresariais com KPIs personalizados e relatórios automatizados." 
+          />
+          
+          <ProjectSuggestion 
+            icon={<TrendingUp size={24} />} 
+            title="CRM Inteligente" 
+            color="#8B5CF6"
+            description="Sistema de gestão de relacionamento com clientes potencializado por inteligência artificial." 
+          />
         </div>
       </div>
     </section>
