@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef } from 'react';
-import { Code, Cpu, Database, Server, CircuitBoard, Smartphone, Laptop, LineChart, BarChart3, PieChart } from 'lucide-react';
+import { Code, Cpu, Database, Server, CircuitBoard, Smartphone, Laptop, LineChart, BarChart3, PieChart, Instagram } from 'lucide-react';
 
 export const Hero: React.FC = () => {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -26,7 +26,7 @@ export const Hero: React.FC = () => {
     };
   }, []);
 
-  // 3D Logo animation effect
+  // Enhanced 3D Logo animation effect
   useEffect(() => {
     if (!logoRef.current) return;
 
@@ -37,6 +37,7 @@ export const Hero: React.FC = () => {
     let rotateY = 0;
     let targetRotateX = 0;
     let targetRotateY = 0;
+    let rotateZ = 0;
     
     // Function to handle mouse movement
     const handleMouseMove = (e: MouseEvent) => {
@@ -49,9 +50,12 @@ export const Hero: React.FC = () => {
       const distanceY = (e.clientY - centerY) / (window.innerHeight / 2);
       
       // Set target rotation based on mouse position
-      targetRotateY = distanceX * 15; // Max 15 degrees rotation
-      targetRotateX = -distanceY * 10; // Max 10 degrees rotation
+      targetRotateY = distanceX * 20; // Increased from 15 to 20 degrees for more dramatic effect
+      targetRotateX = -distanceY * 15; // Increased from 10 to 15 degrees
     };
+    
+    // Add slight continuous rotation for more dynamic effect when not interacting
+    let angle = 0;
     
     // Animation loop for smooth rotation
     const animateLogo = () => {
@@ -59,8 +63,13 @@ export const Hero: React.FC = () => {
       rotateX += (targetRotateX - rotateX) * 0.1;
       rotateY += (targetRotateY - rotateY) * 0.1;
       
-      // Apply the transformation
-      logo.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      // Add continuous subtle rotation on Z axis
+      angle += 0.005;
+      rotateZ = Math.sin(angle) * 5; // Subtle 5 degree rotation on Z axis
+      
+      // Apply the transformation with enhanced perspective
+      logo.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg)`;
+      logo.style.filter = `drop-shadow(0 ${5 + Math.abs(rotateX) / 2}px ${10 + Math.abs(rotateY)}px rgba(0,0,0,0.2))`;
       
       requestAnimationFrame(animateLogo);
     };
@@ -117,13 +126,28 @@ export const Hero: React.FC = () => {
       <div className="container-custom min-h-[90vh] flex flex-col justify-center relative z-10">
         <div className="max-w-3xl mx-auto text-center">
           <div className="flex justify-center mb-6 animate-on-scroll">
-            <img 
-              ref={logoRef}
-              src="/lovable-uploads/35f90851-3845-49d7-bf24-cbdccf2974b6.png" 
-              alt="JimmyDev Logo" 
-              className="h-32 md:h-40 w-auto transition-transform duration-300"
-              style={{ transformStyle: 'preserve-3d' }}
-            />
+            <div className="relative">
+              <img 
+                ref={logoRef}
+                src="/lovable-uploads/35f90851-3845-49d7-bf24-cbdccf2974b6.png" 
+                alt="JimmyDev Logo" 
+                className="h-32 md:h-40 w-auto transition-transform duration-300"
+                style={{ 
+                  transformStyle: 'preserve-3d',
+                  backfaceVisibility: 'hidden',
+                }}
+              />
+              {/* Social media link - Instagram only */}
+              <a 
+                href="https://instagram.com/jimmydevoficial" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 flex items-center gap-1 text-primary hover:text-primary/80 transition-colors"
+              >
+                <Instagram size={20} />
+                <span className="text-sm font-medium">@jimmydevoficial</span>
+              </a>
+            </div>
           </div>
           <h2 className="text-2xl md:text-4xl font-bold mb-6 animate-on-scroll" style={{animationDelay: '200ms'}}>
             Transforme sua visão em <span className="gradient-text">tecnologia poderosa</span>
