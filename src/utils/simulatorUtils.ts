@@ -119,7 +119,41 @@ export const generateUsageReport = () => {
 };
 
 export const exportConfiguration = () => {
-  toast.success('Configuração exportada com sucesso!');
+  try {
+    // Get the current configuration from local storage
+    const configStr = localStorage.getItem('jimmydev-app-simulator');
+    if (!configStr) {
+      console.error('No configuration found in local storage');
+      return;
+    }
+    
+    const config = JSON.parse(configStr);
+    
+    // Create a blob with the configuration as formatted JSON
+    const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
+    
+    // Create a download link
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `jimmydev-app-config-${new Date().toISOString().slice(0, 10)}.json`;
+    
+    // Trigger download
+    document.body.appendChild(a);
+    a.click();
+    
+    // Clean up
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    // Track the event
+    trackEvent('export_configuration_success');
+    return true;
+  } catch (error) {
+    console.error('Error exporting configuration:', error);
+    trackEvent('export_configuration_error', { error: String(error) });
+    return false;
+  }
 };
 
 export const exportAsGif = () => {
@@ -132,4 +166,31 @@ export const saveAsTemplate = () => {
 
 export const trackEvent = (eventName: string, eventData: Record<string, any> = {}) => {
   console.log(`Analytics event tracked: ${eventName}`, eventData);
+};
+
+export const startGuidedDemo = (config, setConfig, setShowGuide, setDemoStep) => {
+  // Set the template to ecommerce for the demo
+  setConfig({
+    ...config,
+    template: 'ecommerce'
+  });
+  
+  // Initialize the guided demo
+  setShowGuide(true);
+  setDemoStep(1);
+  
+  // Show first instruction after a short delay
+  setTimeout(() => {
+    // Show toast message
+    if (window.toast) {
+      window.toast.success('Comece navegando para o carrinho de compras', {
+        position: 'top-center',
+        duration: 6000
+      });
+    }
+  }, 500);
+  
+  // Track the event
+  trackEvent('start_guided_demo');
+  return true;
 };

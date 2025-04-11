@@ -4,6 +4,7 @@ import { Code, Cpu, Database, Server, CircuitBoard, Smartphone, Laptop, LineChar
 
 export const Hero: React.FC = () => {
   const heroRef = useRef<HTMLDivElement>(null);
+  const logoRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -22,6 +23,58 @@ export const Hero: React.FC = () => {
 
     return () => {
       animatedElements?.forEach((el) => observer.unobserve(el));
+    };
+  }, []);
+
+  // 3D Logo animation effect
+  useEffect(() => {
+    if (!logoRef.current) return;
+
+    const logo = logoRef.current;
+    
+    // Initialize rotation values
+    let rotateX = 0;
+    let rotateY = 0;
+    let targetRotateX = 0;
+    let targetRotateY = 0;
+    
+    // Function to handle mouse movement
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = logo.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      
+      // Calculate distance from center (normalized -1 to 1)
+      const distanceX = (e.clientX - centerX) / (window.innerWidth / 2);
+      const distanceY = (e.clientY - centerY) / (window.innerHeight / 2);
+      
+      // Set target rotation based on mouse position
+      targetRotateY = distanceX * 15; // Max 15 degrees rotation
+      targetRotateX = -distanceY * 10; // Max 10 degrees rotation
+    };
+    
+    // Animation loop for smooth rotation
+    const animateLogo = () => {
+      // Smoothly interpolate current rotation to target rotation
+      rotateX += (targetRotateX - rotateX) * 0.1;
+      rotateY += (targetRotateY - rotateY) * 0.1;
+      
+      // Apply the transformation
+      logo.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      
+      requestAnimationFrame(animateLogo);
+    };
+    
+    // Start the animation loop
+    const animationFrame = requestAnimationFrame(animateLogo);
+    
+    // Add event listener for mouse movement
+    window.addEventListener('mousemove', handleMouseMove);
+    
+    // Cleanup
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      cancelAnimationFrame(animationFrame);
     };
   }, []);
 
@@ -65,9 +118,11 @@ export const Hero: React.FC = () => {
         <div className="max-w-3xl mx-auto text-center">
           <div className="flex justify-center mb-6 animate-on-scroll">
             <img 
+              ref={logoRef}
               src="/lovable-uploads/35f90851-3845-49d7-bf24-cbdccf2974b6.png" 
               alt="JimmyDev Logo" 
-              className="h-32 md:h-40 w-auto"
+              className="h-32 md:h-40 w-auto transition-transform duration-300"
+              style={{ transformStyle: 'preserve-3d' }}
             />
           </div>
           <h2 className="text-2xl md:text-4xl font-bold mb-6 animate-on-scroll" style={{animationDelay: '200ms'}}>
