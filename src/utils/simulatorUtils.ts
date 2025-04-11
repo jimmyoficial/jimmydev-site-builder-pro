@@ -1,3 +1,4 @@
+
 import { toast } from 'sonner';
 
 export type AppTemplate = 'ecommerce' | 'social' | 'fitness' | 'delivery' | 'finance';
@@ -181,16 +182,15 @@ export const startGuidedDemo = (config, setConfig, setShowGuide, setDemoStep) =>
   
   // Show first instruction after a short delay
   setTimeout(() => {
-    // Show toast message
-    if (window.toast) {
-      window.toast.success('Comece navegando para o carrinho de compras', {
-        position: 'top-center',
-        duration: 6000
-      });
-    }
+    // Show toast message using the imported toast function
+    toast.success('Comece navegando para o carrinho de compras', {
+      position: 'top-center',
+      duration: 6000
+    });
   }, 500);
   
   // Track the event
   trackEvent('start_guided_demo');
   return true;
 };
+
