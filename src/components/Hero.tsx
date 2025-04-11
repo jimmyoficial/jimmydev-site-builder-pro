@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef } from 'react';
-import { Code, Cpu, Database, Server, CircuitBoard, Smartphone, Laptop, LineChart, BarChart3, PieChart, Instagram } from 'lucide-react';
+import { Code, Cpu, Database, Server, CircuitBoard, Smartphone, Laptop, LineChart, BarChart3, PieChart } from 'lucide-react';
 
 export const Hero: React.FC = () => {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -137,16 +137,6 @@ export const Hero: React.FC = () => {
                   backfaceVisibility: 'hidden',
                 }}
               />
-              {/* Social media link - Instagram only */}
-              <a 
-                href="https://instagram.com/jimmydevoficial" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 flex items-center gap-1 text-primary hover:text-primary/80 transition-colors"
-              >
-                <Instagram size={20} />
-                <span className="text-sm font-medium">@jimmydevoficial</span>
-              </a>
             </div>
           </div>
           <h2 className="text-2xl md:text-4xl font-bold mb-6 animate-on-scroll" style={{animationDelay: '200ms'}}>
@@ -168,3 +158,4 @@ export const Hero: React.FC = () => {
     </div>
   );
 };
+
