@@ -1,3 +1,4 @@
+
 import React, { ReactNode, useState } from 'react';
 import { FloatingForm } from './FloatingForm';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -83,7 +84,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             </div>
             <div>
               <h3 className="text-xl font-bold mb-4">Contato</h3>
-              <p className="text-gray-300 mb-2">contato@jimmydev.com</p>
+              <p className="text-gray-300 mb-2">contato@jimmydev.com.br</p>
               <p className="text-gray-300">Curitiba, PR - Brasil</p>
             </div>
           </div>

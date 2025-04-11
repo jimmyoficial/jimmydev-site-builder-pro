@@ -39,7 +39,7 @@ const Help = () => {
             <div className="bg-blue-50 p-4 rounded-lg mb-6">
               <h3 className="font-semibold text-lg mb-2">Precisa de ajuda?</h3>
               <p className="text-gray-600 mb-3">Nossa equipe está pronta para ajudar com quaisquer dúvidas ou problemas.</p>
-              <a href="mailto:suporte@jimmydev.com" className="btn-primary inline-block">Contatar suporte</a>
+              <a href="mailto:contato@jimmydev.com.br" className="btn-primary inline-block">Contatar suporte</a>
             </div>
             
             <div className="space-y-4">

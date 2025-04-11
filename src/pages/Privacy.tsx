@@ -57,7 +57,7 @@ const Privacy = () => {
             
             <div>
               <h2 className="text-xl font-bold mb-3">7. Contato</h2>
-              <p className="text-gray-600">Se você tiver dúvidas ou preocupações sobre nossa Política de Privacidade, entre em contato conosco pelo e-mail: privacidade@jimmydev.com</p>
+              <p className="text-gray-600">Se você tiver dúvidas ou preocupações sobre nossa Política de Privacidade, entre em contato conosco pelo e-mail: contato@jimmydev.com.br</p>
             </div>
             
             <p className="text-gray-600 italic">Última atualização: 11 de abril de 2025</p>
