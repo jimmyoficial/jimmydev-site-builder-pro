@@ -27,11 +27,14 @@ import {
   exportConfiguration,
   exportAsGif,
   generateUsageReport,
-  trackEvent
+  trackEvent,
+  startGuidedDemo,
+  saveAsTemplate
 } from '@/utils/simulatorUtils';
 import { EcommerceApp } from './app-templates/EcommerceApp';
 import { SocialApp } from './app-templates/SocialApp';
 import { FitnessApp } from './app-templates/FitnessApp';
+import { Button } from './ui/button';
 
 export const AppSimulator: React.FC = () => {
   const [config, setConfig] = useLocalStorage<AppSimulatorConfig>('jimmydev-app-simulator', defaultConfig);
@@ -176,13 +179,23 @@ export const AppSimulator: React.FC = () => {
   };
 
   const handleExportConfig = () => {
-    exportConfiguration();
+    const success = exportConfiguration();
+    if (success) {
+      toast.success('Configuração exportada com sucesso!');
+    } else {
+      toast.error('Erro ao exportar configuração');
+    }
     trackEvent('export_configuration');
   };
 
   const handleExportGif = () => {
     exportAsGif();
     trackEvent('export_as_gif');
+  };
+
+  const handleSaveAsTemplate = () => {
+    saveAsTemplate();
+    trackEvent('save_as_template');
   };
 
   const handleInteraction = (action: string) => {
@@ -215,22 +228,8 @@ export const AppSimulator: React.FC = () => {
     }
   };
 
-  const startGuidedDemo = () => {
-    setShowGuide(true);
-    setDemoStep(1);
-    setConfig({
-      ...config,
-      template: 'ecommerce'
-    });
-    
-    setTimeout(() => {
-      toast.success('Comece navegando para o carrinho de compras', {
-        position: 'top-center',
-        duration: 6000
-      });
-    }, 500);
-    
-    trackEvent('start_guided_demo');
+  const handleGuidedDemo = () => {
+    startGuidedDemo(config, setConfig, setShowGuide, setDemoStep);
   };
 
   const ImageUploader = ({ 
@@ -710,34 +709,42 @@ export const AppSimulator: React.FC = () => {
             </div>
             
             <div className="flex flex-col gap-3">
-              <button 
-                onClick={startGuidedDemo} 
-                className="btn-primary flex items-center justify-center bg-primary"
+              <Button 
+                onClick={handleGuidedDemo} 
+                className="btn-primary flex items-center justify-center bg-primary export-btn-pulse"
+                variant="default"
+                data-testid="start-demo-btn"
               >
                 <Play size={18} className="mr-2" />
                 Iniciar demonstração guiada
-              </button>
-              <button 
+              </Button>
+              <Button 
                 onClick={handleExportConfig} 
                 className="btn-primary flex items-center justify-center"
+                variant="default"
+                data-testid="export-config-btn"
               >
                 <ClipboardCheck size={18} className="mr-2" />
                 Exportar configuração
-              </button>
-              <button 
+              </Button>
+              <Button 
                 onClick={handleExportGif} 
                 className="btn-outline flex items-center justify-center"
+                variant="outline"
+                data-testid="export-gif-btn"
               >
                 <Video size={18} className="mr-2" />
                 Salvar como GIF
-              </button>
-              <button 
+              </Button>
+              <Button 
                 onClick={handleReset} 
                 className="btn-outline flex items-center justify-center"
+                variant="outline"
+                data-testid="reset-btn"
               >
                 <RotateCcw size={18} className="mr-2" />
                 Restaurar padrão
-              </button>
+              </Button>
             </div>
           </div>
           

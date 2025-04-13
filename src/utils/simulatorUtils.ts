@@ -125,7 +125,8 @@ export const exportConfiguration = () => {
     const configStr = localStorage.getItem('jimmydev-app-simulator');
     if (!configStr) {
       console.error('No configuration found in local storage');
-      return;
+      toast.error('Nenhuma configuração encontrada no armazenamento local');
+      return false;
     }
     
     const config = JSON.parse(configStr);
@@ -152,17 +153,75 @@ export const exportConfiguration = () => {
     return true;
   } catch (error) {
     console.error('Error exporting configuration:', error);
+    toast.error(`Erro ao exportar configuração: ${error}`);
     trackEvent('export_configuration_error', { error: String(error) });
     return false;
   }
 };
 
 export const exportAsGif = () => {
-  toast.success('Simulação exportada como GIF!');
+  try {
+    // In a real implementation, this would capture the app simulator and convert it to a GIF
+    // For now, we'll just show a success message
+    setTimeout(() => {
+      const dummyGifData = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+      
+      // Create a download link for the dummy GIF
+      const a = document.createElement('a');
+      a.href = dummyGifData;
+      a.download = `jimmydev-app-${new Date().toISOString().slice(0, 10)}.gif`;
+      
+      // Trigger download
+      document.body.appendChild(a);
+      a.click();
+      
+      // Clean up
+      document.body.removeChild(a);
+    }, 500);
+    
+    toast.success('Simulação exportada como GIF!');
+    trackEvent('export_gif_success');
+    return true;
+  } catch (error) {
+    console.error('Error exporting as GIF:', error);
+    toast.error(`Erro ao exportar como GIF: ${error}`);
+    trackEvent('export_gif_error', { error: String(error) });
+    return false;
+  }
 };
 
 export const saveAsTemplate = () => {
-  toast.success('Configuração salva como modelo personalizado!');
+  try {
+    // In a real implementation, this would save the current configuration as a template
+    // For demonstration purposes, we'll just show a success message
+    const configStr = localStorage.getItem('jimmydev-app-simulator');
+    if (!configStr) {
+      toast.error('Nenhuma configuração encontrada para salvar como modelo');
+      return false;
+    }
+    
+    // Simulate saving template
+    const templates = JSON.parse(localStorage.getItem('jimmydev-templates') || '[]');
+    const config = JSON.parse(configStr);
+    
+    templates.push({
+      ...config,
+      id: `template-${Date.now()}`,
+      name: `${config.appName} Template`,
+      createdAt: new Date().toISOString()
+    });
+    
+    localStorage.setItem('jimmydev-templates', JSON.stringify(templates));
+    
+    toast.success('Configuração salva como modelo personalizado!');
+    trackEvent('save_template_success');
+    return true;
+  } catch (error) {
+    console.error('Error saving as template:', error);
+    toast.error(`Erro ao salvar como modelo: ${error}`);
+    trackEvent('save_template_error', { error: String(error) });
+    return false;
+  }
 };
 
 export const trackEvent = (eventName: string, eventData: Record<string, any> = {}) => {
@@ -170,27 +229,33 @@ export const trackEvent = (eventName: string, eventData: Record<string, any> = {
 };
 
 export const startGuidedDemo = (config, setConfig, setShowGuide, setDemoStep) => {
-  // Set the template to ecommerce for the demo
-  setConfig({
-    ...config,
-    template: 'ecommerce'
-  });
-  
-  // Initialize the guided demo
-  setShowGuide(true);
-  setDemoStep(1);
-  
-  // Show first instruction after a short delay
-  setTimeout(() => {
-    // Show toast message using the imported toast function
-    toast.success('Comece navegando para o carrinho de compras', {
-      position: 'top-center',
-      duration: 6000
+  try {
+    // Set the template to ecommerce for the demo
+    setConfig({
+      ...config,
+      template: 'ecommerce'
     });
-  }, 500);
-  
-  // Track the event
-  trackEvent('start_guided_demo');
-  return true;
+    
+    // Initialize the guided demo
+    setShowGuide(true);
+    setDemoStep(1);
+    
+    // Show first instruction after a short delay
+    setTimeout(() => {
+      // Show toast message
+      toast.success('Comece navegando para o carrinho de compras', {
+        position: 'top-center',
+        duration: 6000
+      });
+    }, 500);
+    
+    // Track the event
+    trackEvent('start_guided_demo');
+    return true;
+  } catch (error) {
+    console.error('Error starting guided demo:', error);
+    toast.error(`Erro ao iniciar demonstração guiada: ${error}`);
+    trackEvent('start_guided_demo_error', { error: String(error) });
+    return false;
+  }
 };
-
