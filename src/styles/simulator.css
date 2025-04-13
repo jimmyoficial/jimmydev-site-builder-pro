@@ -167,36 +167,39 @@
   transform: perspective(800px) rotateY(-15deg) rotateX(-5deg);
 }
 
-/* Device screen media query for better responsiveness */
-@media (min-height: 900px) {
-  .device-frame {
-    transform: scale(1.25);
-  }
-}
-
-@media (min-height: 1000px) {
-  .device-frame {
-    transform: scale(1.35);
-  }
-}
-
-/* Updated app simulator container size to match real smartphone */
+/* App simulator container - Updated for better visibility */
 .app-simulator-container {
-  height: 850px;  /* Increased height */
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 20px 0;
+  overflow: visible;
 }
 
-/* Increase the device size and screen in AppSimulator */
+/* Device body and screen - Adjusted to ensure full visibility */
 .device-body {
-  width: 400px;  /* Increased from default */
-  height: 820px; /* Increased from default */
+  width: 375px;
+  height: 780px;
+  position: relative;
 }
 
 .device-screen {
   height: 100%;
   width: 100%;
+}
+
+/* Scale adjustments to ensure the device is fully visible */
+@media (min-height: 800px) {
+  .device-frame {
+    transform: scale(0.95);
+  }
+}
+
+@media (max-height: 799px) {
+  .device-frame {
+    transform: scale(0.85);
+  }
 }
 
 /* Website simulator specific styles */

@@ -443,9 +443,9 @@ export const AppSimulator: React.FC = () => {
         )}
         
         <div 
-          className="device-frame relative transform transition-all duration-500"
+          className="device-frame relative"
           style={{
-            width: `${deviceStyle.width * 1.2}px`,
+            width: `${deviceStyle.width}px`,
             boxShadow: deviceStyle.shadowStyle,
           }}
         >
@@ -466,8 +466,8 @@ export const AppSimulator: React.FC = () => {
             <div 
               className="device-screen rounded-[32px] overflow-hidden bg-white relative"
               style={{
-                height: `${deviceStyle.height * 1.1}px`,
-                width: `${deviceStyle.width * 1.1}px`,
+                height: `${deviceStyle.height}px`,
+                width: `${deviceStyle.width - (deviceStyle.bezelWidth * 2)}px`,
               }}
             >
               <div className="h-8 bg-transparent absolute top-0 left-0 right-0 z-10 flex justify-between items-center px-5">
