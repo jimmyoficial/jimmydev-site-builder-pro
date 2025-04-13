@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -47,7 +46,6 @@ export const Simulator: React.FC = () => {
   const previewRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  // Detect when the section is visible
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -83,11 +81,18 @@ export const Simulator: React.FC = () => {
 
     const reader = new FileReader();
     reader.onload = (e) => {
-      setConfig({
-        ...config,
-        logo: e.target?.result as string,
-      });
-      toast.success('Logo carregado com sucesso!');
+      if (e.target?.result) {
+        setConfig({
+          ...config,
+          logo: e.target.result as string,
+        });
+        toast.success('Logo carregado com sucesso!');
+      } else {
+        toast.error('Ocorreu um erro ao carregar a imagem.');
+      }
+    };
+    reader.onerror = () => {
+      toast.error('Ocorreu um erro ao ler o arquivo.');
     };
     reader.readAsDataURL(file);
   };
@@ -106,11 +111,18 @@ export const Simulator: React.FC = () => {
 
     const reader = new FileReader();
     reader.onload = (e) => {
-      setConfig({
-        ...config,
-        logo: e.target?.result as string,
-      });
-      toast.success('Logo carregado com sucesso!');
+      if (e.target?.result) {
+        setConfig({
+          ...config,
+          logo: e.target.result as string,
+        });
+        toast.success('Logo carregado com sucesso!');
+      } else {
+        toast.error('Ocorreu um erro ao carregar a imagem.');
+      }
+    };
+    reader.onerror = () => {
+      toast.error('Ocorreu um erro ao ler o arquivo.');
     };
     reader.readAsDataURL(file);
   };
@@ -126,15 +138,12 @@ export const Simulator: React.FC = () => {
   };
 
   const generatePDF = () => {
-    // In a real implementation, this would generate a PDF with the configuration
-    // For this demo, we'll just show a success message
     toast.success('Configuração salva como PDF! Em um ambiente real, o PDF seria gerado.');
   };
 
   const TemplatePreview: React.FC<{ type: 'modern' | 'minimal' | 'corporate' }> = ({ type }) => {
     return (
       <div className={`h-full bg-white rounded-lg shadow-md overflow-hidden ${viewMode === 'mobile' ? 'w-[320px] mx-auto' : 'w-full'}`}>
-        {/* Header */}
         <div 
           className={`p-4 flex justify-between items-center ${
             type === 'modern' 
@@ -204,7 +213,6 @@ export const Simulator: React.FC = () => {
           )}
         </div>
         
-        {/* Hero Section */}
         <div 
           className={`relative overflow-hidden ${
             type === 'modern' 
@@ -292,7 +300,6 @@ export const Simulator: React.FC = () => {
           </div>
         </div>
         
-        {/* Content Preview */}
         <div className="p-6 bg-white">
           <div className="mb-8">
             <h2 className={`text-lg font-semibold mb-4 ${
@@ -367,7 +374,6 @@ export const Simulator: React.FC = () => {
           </div>
         </div>
         
-        {/* Footer */}
         <div className={`p-4 text-sm ${
           type === 'corporate' 
             ? 'bg-slate-800 text-white/80' 
@@ -444,11 +450,9 @@ export const Simulator: React.FC = () => {
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Controls */}
           <div className="bg-white p-8 rounded-xl shadow-sm animate-on-scroll" style={{ animationDelay: '400ms' }}>
             <h3 className="text-xl font-bold mb-6">Personalização corporativa</h3>
             
-            {/* Company Name */}
             <div className="mb-6">
               <label className="block text-sm font-medium text-neutral-700 mb-2">
                 Nome da empresa
@@ -462,7 +466,6 @@ export const Simulator: React.FC = () => {
               />
             </div>
             
-            {/* Logo Upload */}
             <div className="mb-8">
               <label className="block text-sm font-medium text-neutral-700 mb-2">
                 Logo da empresa
@@ -504,7 +507,6 @@ export const Simulator: React.FC = () => {
               </div>
             </div>
             
-            {/* Color Pickers */}
             <div className="mb-8">
               <label className="block text-sm font-medium text-neutral-700 mb-2">
                 Cor principal corporativa
@@ -547,7 +549,6 @@ export const Simulator: React.FC = () => {
               </div>
             </div>
             
-            {/* Template Selection */}
             <div className="mb-8">
               <label className="block text-sm font-medium text-neutral-700 mb-2">
                 Estilo de site corporativo
@@ -580,7 +581,6 @@ export const Simulator: React.FC = () => {
               </div>
             </div>
             
-            {/* Actions */}
             <div className="flex flex-col gap-3">
               <button 
                 onClick={generatePDF} 
@@ -599,7 +599,6 @@ export const Simulator: React.FC = () => {
             </div>
           </div>
           
-          {/* Preview */}
           <div className="col-span-2 animate-on-scroll" style={{ animationDelay: '600ms' }}>
             <div className="bg-white p-6 rounded-xl shadow-sm h-full">
               <div className="flex justify-between items-center mb-6">

@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Layout } from '@/components/Layout';
+import { Button } from "@/components/ui/button";
 
 const Help = () => {
   return (
@@ -39,7 +40,9 @@ const Help = () => {
             <div className="bg-blue-50 p-4 rounded-lg mb-6">
               <h3 className="font-semibold text-lg mb-2">Precisa de ajuda?</h3>
               <p className="text-gray-600 mb-3">Nossa equipe está pronta para ajudar com quaisquer dúvidas ou problemas.</p>
-              <a href="mailto:contato@jimmydev.com.br" className="btn-primary inline-block">Contatar suporte</a>
+              <Button asChild variant="default" className="bg-primary">
+                <a href="mailto:contato@jimmydev.com.br">Contatar suporte</a>
+              </Button>
             </div>
             
             <div className="space-y-4">
