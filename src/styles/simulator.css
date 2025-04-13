@@ -1,3 +1,4 @@
+
 /* Device frame styling */
 .device-frame {
   perspective: 1000px;
@@ -169,14 +170,33 @@
 /* Device screen media query for better responsiveness */
 @media (min-height: 900px) {
   .device-frame {
-    transform: scale(1.1);
+    transform: scale(1.25);
   }
 }
 
 @media (min-height: 1000px) {
   .device-frame {
-    transform: scale(1.2);
+    transform: scale(1.35);
   }
+}
+
+/* Updated app simulator container size to match real smartphone */
+.app-simulator-container {
+  height: 850px;  /* Increased height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Increase the device size and screen in AppSimulator */
+.device-body {
+  width: 400px;  /* Increased from default */
+  height: 820px; /* Increased from default */
+}
+
+.device-screen {
+  height: 100%;
+  width: 100%;
 }
 
 /* Website simulator specific styles */

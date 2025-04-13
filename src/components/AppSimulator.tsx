@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -37,7 +36,6 @@ import { FitnessApp } from './app-templates/FitnessApp';
 export const AppSimulator: React.FC = () => {
   const [config, setConfig] = useLocalStorage<AppSimulatorConfig>('jimmydev-app-simulator', defaultConfig);
   const [viewMode, setViewMode] = useState<'device' | 'analytics'>('device');
-  // Replace state management of fileInput with useRef
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imageUploadType, setImageUploadType] = useState<'logo' | 'custom'>('logo');
   const [customImageKey, setCustomImageKey] = useState<string>('');
@@ -46,7 +44,6 @@ export const AppSimulator: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const deviceRef = useRef<HTMLDivElement>(null);
 
-  // Ensure the device model exists in our deviceModels object, otherwise use the default
   useEffect(() => {
     if (!deviceModels[config.deviceModel]) {
       console.warn(`Device model ${config.deviceModel} not found, using default`);
@@ -57,7 +54,6 @@ export const AppSimulator: React.FC = () => {
     }
   }, [config.deviceModel]);
 
-  // Ensure customImages object is always initialized
   useEffect(() => {
     if (!config.customImages) {
       setConfig({
@@ -67,7 +63,6 @@ export const AppSimulator: React.FC = () => {
     }
   }, [config]);
 
-  // Detect when the section is visible
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -96,7 +91,6 @@ export const AppSimulator: React.FC = () => {
     };
   }, []);
 
-  // Track events
   useEffect(() => {
     trackEvent('app_simulator_viewed', { template: config.template });
   }, []);
@@ -194,7 +188,6 @@ export const AppSimulator: React.FC = () => {
   const handleInteraction = (action: string) => {
     trackEvent('app_interaction', { action });
     
-    // Guide steps
     if (showGuide) {
       if (demoStep === 1 && action === 'nav_to_cart') {
         setDemoStep(2);
@@ -252,11 +245,9 @@ export const AppSimulator: React.FC = () => {
       if (type === 'custom' && imageKey) {
         setCustomImageKey(imageKey);
       }
-      // Use the ref instead of state
       fileInputRef.current?.click();
     };
     
-    // Safely access customImages with fallbacks
     const customImages = config.customImages || {};
     const currentImage = type === 'logo' 
       ? config.logo 
@@ -419,19 +410,17 @@ export const AppSimulator: React.FC = () => {
       }
     };
     
-    // Make sure we have a valid device model, defaulting to the first one if needed
     const deviceModel = config.deviceModel;
     
-    // Ensure we have a valid device model by checking if it exists
     if (!deviceModels[deviceModel]) {
       console.warn(`Invalid device model: ${deviceModel}, using default`);
-      return <div>Loading device...</div>; // Show a loading state while we wait for the useEffect to fix the model
+      return <div>Loading device...</div>;
     }
     
     const deviceStyle = deviceModels[deviceModel];
     
     return (
-      <div className="h-full flex items-center justify-center relative" ref={deviceRef}>
+      <div className="h-full flex items-center justify-center relative app-simulator-container" ref={deviceRef}>
         {showGuide && (
           <div className="absolute top-4 left-0 right-0 z-20 flex justify-center">
             <div className="bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg border border-gray-200">
@@ -456,7 +445,7 @@ export const AppSimulator: React.FC = () => {
         <div 
           className="device-frame relative transform transition-all duration-500"
           style={{
-            width: `${deviceStyle.width * 1.1}px`,
+            width: `${deviceStyle.width * 1.2}px`,
             boxShadow: deviceStyle.shadowStyle,
           }}
         >
@@ -468,22 +457,19 @@ export const AppSimulator: React.FC = () => {
               padding: `${deviceStyle.bezelWidth}px`,
             }}
           >
-            {/* Device notch or camera */}
             {deviceStyle.notchStyle === 'dynamic-island' ? (
-              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 h-[30px] w-[120px] bg-black rounded-b-[14px] z-10"></div>
+              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 h-[35px] w-[130px] bg-black rounded-b-[16px] z-10"></div>
             ) : (
-              <div className="absolute top-[12px] right-[80px] h-[10px] w-[10px] bg-black rounded-full z-10 border border-gray-800"></div>
+              <div className="absolute top-[12px] right-[80px] h-[12px] w-[12px] bg-black rounded-full z-10 border border-gray-800"></div>
             )}
             
-            {/* Device screen */}
             <div 
-              className="device-screen rounded-[30px] overflow-hidden bg-white relative"
+              className="device-screen rounded-[32px] overflow-hidden bg-white relative"
               style={{
-                height: `${deviceStyle.height}px`,
-                width: `${deviceStyle.width}px`,
+                height: `${deviceStyle.height * 1.1}px`,
+                width: `${deviceStyle.width * 1.1}px`,
               }}
             >
-              {/* Status bar */}
               <div className="h-8 bg-transparent absolute top-0 left-0 right-0 z-10 flex justify-between items-center px-5">
                 <div className="text-xs font-medium">
                   {new Date().getHours()}:{String(new Date().getMinutes()).padStart(2, '0')}
@@ -513,32 +499,29 @@ export const AppSimulator: React.FC = () => {
                 </div>
               </div>
               
-              {/* App content */}
               <div className="h-full w-full">
                 {getAppComponent()}
               </div>
             </div>
           </div>
           
-          {/* Power button */}
           <div 
-            className="absolute -right-[2px] top-[120px] h-[60px] w-[3px] rounded-l-sm"
+            className="absolute -right-[2px] top-[140px] h-[70px] w-[4px] rounded-l-sm"
             style={{ 
               backgroundColor: deviceStyle.bezelColor,
               background: 'linear-gradient(to right, #555, #222)',
             }}
           ></div>
           
-          {/* Volume buttons */}
           <div 
-            className="absolute -left-[2px] top-[100px] h-[30px] w-[3px] rounded-r-sm"
+            className="absolute -left-[2px] top-[120px] h-[35px] w-[4px] rounded-r-sm"
             style={{ 
               backgroundColor: deviceStyle.bezelColor,
               background: 'linear-gradient(to left, #555, #222)',
             }}
           ></div>
           <div 
-            className="absolute -left-[2px] top-[140px] h-[30px] w-[3px] rounded-r-sm"
+            className="absolute -left-[2px] top-[170px] h-[35px] w-[4px] rounded-r-sm"
             style={{ 
               backgroundColor: deviceStyle.bezelColor,
               background: 'linear-gradient(to left, #555, #222)',
@@ -563,7 +546,6 @@ export const AppSimulator: React.FC = () => {
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Controls */}
           <div className="bg-white p-8 rounded-xl shadow-sm animate-on-scroll" style={{ animationDelay: '400ms' }}>
             <h3 className="text-xl font-bold mb-6">Personalização do aplicativo</h3>
             
@@ -759,7 +741,6 @@ export const AppSimulator: React.FC = () => {
             </div>
           </div>
           
-          {/* Preview */}
           <div className="col-span-2 animate-on-scroll" style={{ animationDelay: '600ms' }}>
             <div className="bg-white p-6 rounded-xl shadow-sm h-full">
               <div className="flex justify-between items-center mb-6">
