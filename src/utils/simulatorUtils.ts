@@ -150,6 +150,9 @@ export const exportConfiguration = () => {
     
     // Track the event
     trackEvent('export_configuration_success');
+    
+    // Show success toast
+    toast.success('Configuração exportada com sucesso!');
     return true;
   } catch (error) {
     console.error('Error exporting configuration:', error);
@@ -162,7 +165,7 @@ export const exportConfiguration = () => {
 export const exportAsGif = () => {
   try {
     // In a real implementation, this would capture the app simulator and convert it to a GIF
-    // For now, we'll just show a success message
+    // For now, we'll just create a sample GIF for download
     setTimeout(() => {
       const dummyGifData = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
       
@@ -228,7 +231,7 @@ export const trackEvent = (eventName: string, eventData: Record<string, any> = {
   console.log(`Analytics event tracked: ${eventName}`, eventData);
 };
 
-export const startGuidedDemo = (config, setConfig, setShowGuide, setDemoStep) => {
+export const startGuidedDemo = (config: AppSimulatorConfig, setConfig: Function, setShowGuide: Function, setDemoStep: Function) => {
   try {
     // Set the template to ecommerce for the demo
     setConfig({
@@ -243,11 +246,45 @@ export const startGuidedDemo = (config, setConfig, setShowGuide, setDemoStep) =>
     // Show first instruction after a short delay
     setTimeout(() => {
       // Show toast message
-      toast.success('Comece navegando para o carrinho de compras', {
+      toast.success('Demonstração iniciada! Confira as instruções na tela', {
         position: 'top-center',
         duration: 6000
       });
     }, 500);
+    
+    // Create demo overlay on the landing page
+    const demoOverlay = document.createElement('div');
+    demoOverlay.id = 'demo-overlay';
+    demoOverlay.className = 'fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center';
+    
+    const demoContent = document.createElement('div');
+    demoContent.className = 'bg-white p-8 rounded-xl max-w-2xl shadow-2xl transform transition-all animate-scale-in';
+    demoContent.innerHTML = `
+      <h2 class="text-2xl font-bold mb-4 text-center">Demonstração Guiada Iniciada</h2>
+      <p class="mb-6 text-gray-700">
+        Esta demonstração interativa irá guiá-lo pelas principais funcionalidades do aplicativo corporativo.
+        Siga as instruções que aparecerão no simulador.
+      </p>
+      <div class="flex justify-center">
+        <button id="close-demo" class="py-2 px-4 bg-primary text-white rounded-lg">
+          Continuar
+        </button>
+      </div>
+    `;
+    
+    demoOverlay.appendChild(demoContent);
+    document.body.appendChild(demoOverlay);
+    
+    // Add event listener to close button
+    document.getElementById('close-demo')?.addEventListener('click', () => {
+      document.body.removeChild(demoOverlay);
+      
+      // Scroll to simulator section
+      const simulatorSection = document.getElementById('app-simulator');
+      if (simulatorSection) {
+        simulatorSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
     
     // Track the event
     trackEvent('start_guided_demo');

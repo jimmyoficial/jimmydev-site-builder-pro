@@ -179,12 +179,7 @@ export const AppSimulator: React.FC = () => {
   };
 
   const handleExportConfig = () => {
-    const success = exportConfiguration();
-    if (success) {
-      toast.success('Configuração exportada com sucesso!');
-    } else {
-      toast.error('Erro ao exportar configuração');
-    }
+    exportConfiguration();
     trackEvent('export_configuration');
   };
 
@@ -202,19 +197,19 @@ export const AppSimulator: React.FC = () => {
     trackEvent('app_interaction', { action });
     
     if (showGuide) {
-      if (demoStep === 1 && action === 'nav_to_cart') {
+      if (demoStep === 1 && action === 'nav_to_features') {
         setDemoStep(2);
-        toast.success('Ótimo! Agora adicione um produto ao carrinho', {
+        toast.success('Ótimo! Agora visualize um recurso', {
           position: 'top-center',
           duration: 4000
         });
-      } else if (demoStep === 2 && action === 'add_to_cart') {
+      } else if (demoStep === 2 && action === 'view_feature') {
         setDemoStep(3);
-        toast.success('Excelente! Finalize a compra', {
+        toast.success('Excelente! Selecione suas preferências', {
           position: 'top-center',
           duration: 4000
         });
-      } else if (demoStep === 3 && action === 'begin_checkout') {
+      } else if (demoStep === 3 && action === 'select_preferences') {
         setDemoStep(4);
         toast.success('Perfeito! Demonstração concluída com sucesso.', {
           position: 'top-center',
@@ -431,9 +426,9 @@ export const AppSimulator: React.FC = () => {
                   {demoStep}
                 </div>
                 <span className="text-sm font-medium">
-                  {demoStep === 1 && "Navegue para o carrinho"}
-                  {demoStep === 2 && "Adicione um produto ao carrinho"}
-                  {demoStep === 3 && "Finalize a compra"}
+                  {demoStep === 1 && "Navegue para recursos principais"}
+                  {demoStep === 2 && "Visualize detalhes de um recurso"}
+                  {demoStep === 3 && "Selecione suas preferências"}
                   {demoStep === 4 && "Demonstração concluída!"}
                 </span>
               </div>
