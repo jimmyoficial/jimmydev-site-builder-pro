@@ -1,15 +1,16 @@
-
-/* Device frame styling */
+/* Device frame styling - Enhanced for better 3D effect */
 .device-frame {
-  perspective: 1000px;
+  perspective: 1200px;
   transform-style: preserve-3d;
   transform: rotateY(0deg) rotateX(0deg);
   transition: transform 0.5s ease;
   margin: 0 auto;
+  filter: drop-shadow(0 20px 40px rgba(0,0,0,0.15));
 }
 
 .device-frame:hover {
-  transform: rotateY(-5deg) rotateX(2deg);
+  transform: rotateY(-7deg) rotateX(3deg);
+  filter: drop-shadow(0 30px 60px rgba(0,0,0,0.2));
 }
 
 /* Animation for elements */
@@ -35,20 +36,24 @@
   transform: translateY(0);
 }
 
-/* iPhone frame styles */
+/* iPhone frame styles - Improved with more realistic details */
 .iphone-frame {
   position: relative;
   width: 100%;
-  max-width: 375px;
+  max-width: 300px;
   height: auto;
-  background-color: #1a1a1a;
+  background: linear-gradient(145deg, #232323, #1a1a1a);
   border-radius: 52px;
-  box-shadow: 0 50px 100px rgba(0,0,0,0.25);
+  box-shadow: 
+    0 50px 100px rgba(0,0,0,0.25),
+    inset 0 -3px 6px rgba(255,255,255,0.05),
+    inset 0 3px 6px rgba(0,0,0,0.15);
   padding: 12px;
   transform: perspective(1000px) rotateY(0deg);
   transition: transform 0.3s ease;
   overflow: hidden;
   margin: 0 auto;
+  border: 1px solid rgba(255,255,255,0.1);
 }
 
 .iphone-frame:hover {
@@ -63,6 +68,7 @@
   overflow: hidden;
   position: relative;
   aspect-ratio: 9/19.5;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
 }
 
 .iphone-notch {
@@ -76,9 +82,10 @@
   border-bottom-left-radius: 18px;
   border-bottom-right-radius: 18px;
   z-index: 10;
+  box-shadow: inset 0 -3px 3px rgba(0,0,0,0.2);
 }
 
-/* Interactive elements */
+/* Interactive elements - Enhanced with animations */
 .btn-primary {
   background-color: #ED422A;
   color: white;
@@ -87,12 +94,34 @@
   font-weight: 600;
   transition: all 0.2s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
 }
 
 .btn-primary:hover {
   background-color: #D53A25;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1) translate(-50%, -50%);
+  transform-origin: 50% 50%;
+}
+
+.btn-primary:active::after {
+  opacity: 0.3;
+  transform: scale(20) translate(-50%, -50%);
+  transition: transform 0.5s, opacity 1s;
 }
 
 .btn-outline {
@@ -180,70 +209,79 @@
   padding: 12px 0;
   overflow: visible;
   width: 100%;
+  position: relative;
 }
 
-/* Device body and screen - Adjusted for mobile visibility */
+/* Device body and screen - Adjusted for better mobile visibility */
 .device-body {
   position: relative;
   width: 100%;
-  max-width: 375px;
+  max-width: 300px;
   margin: 0 auto;
   aspect-ratio: 9/19.5;
+  transition: transform 0.3s ease;
 }
 
 .device-screen {
   height: 100%;
   width: 100%;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 15px rgba(0,0,0,0.1);
 }
 
 /* Scale adjustments to ensure the device is fully visible on all screens */
 @media (max-width: 768px) {
+  .device-frame {
+    transform: scale(0.9);
+    margin: 0 auto;
+  }
+  
+  .app-simulator-container {
+    padding: 0;
+    margin-top: -20px;
+    margin-bottom: -20px;
+  }
+}
+
+@media (max-width: 480px) {
   .device-frame {
     transform: scale(0.85);
     margin: 0 auto;
   }
   
   .app-simulator-container {
-    padding: 0;
-    margin-top: -40px;
-    margin-bottom: -40px;
+    margin-top: -30px;
+    margin-bottom: -30px;
   }
 }
 
-@media (max-width: 480px) {
-  .device-frame {
-    transform: scale(0.75);
-    margin: 0 auto;
-  }
-  
-  .app-simulator-container {
-    margin-top: -60px;
-    margin-bottom: -60px;
-  }
-}
-
-/* Website simulator specific styles */
+/* Enhanced Website simulator specific styles */
 .website-frame {
   box-shadow: 0 20px 40px rgba(0,0,0,0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 12px;
+  overflow: hidden;
+  background: linear-gradient(145deg, #ffffff, #f5f5f5);
+  border: 1px solid rgba(0,0,0,0.05);
 }
 
 .website-frame:hover {
-  transform: translateY(-5px);
+  transform: translateY(-5px) rotateY(-2deg);
   box-shadow: 0 25px 50px rgba(0,0,0,0.15);
 }
 
-/* Desktop screen styles */
+/* Desktop screen styles - Enhanced with better browser chrome */
 .desktop-screen {
   border-radius: 8px;
   overflow: hidden;
   background-color: white;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
 }
 
 .desktop-browser-bar {
   height: 36px;
-  background-color: #f1f1f1;
+  background: linear-gradient(to bottom, #f8f8f8, #f1f1f1);
   display: flex;
   align-items: center;
   padding: 0 12px;
@@ -259,6 +297,23 @@
   width: 12px;
   height: 12px;
   border-radius: 50%;
+  transition: opacity 0.2s ease;
+}
+
+.browser-dot:nth-child(1) {
+  background-color: #ff5f57;
+}
+
+.browser-dot:nth-child(2) {
+  background-color: #ffbd2e;
+}
+
+.browser-dot:nth-child(3) {
+  background-color: #28ca41;
+}
+
+.browser-dot:hover {
+  opacity: 0.8;
 }
 
 .browser-address-bar {
@@ -273,18 +328,23 @@
   font-size: 12px;
   color: #666;
   max-width: 500px;
+  border: 1px solid rgba(0,0,0,0.1);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
 }
 
-/* 3D Logo Animation */
+/* 3D Logo Animation - Enhanced */
 @keyframes float-3d {
   0% {
     transform: perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0);
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
   }
   50% {
     transform: perspective(1000px) rotateX(5deg) rotateY(5deg) translateZ(20px);
+    filter: drop-shadow(0 20px 30px rgba(0,0,0,0.2));
   }
   100% {
     transform: perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0);
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
   }
 }
 
@@ -297,55 +357,17 @@
   animation: float-3d 3s ease-in-out infinite;
 }
 
-/* Fix for demo functionality */
-.app-simulator-demo-step {
-  position: absolute;
-  top: 10px;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  display: flex;
-  justify-content: center;
-  padding: 8px;
-}
-
-.app-simulator-demo-badge {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(4px);
-  border-radius: 20px;
-  padding: 4px 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-/* Export Configuration Button Animation */
-.export-btn-pulse {
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(237, 66, 42, 0.4);
-  }
-  70% {
-    box-shadow: 0 0 0 10px rgba(237, 66, 42, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(237, 66, 42, 0);
-  }
-}
-
 /* Mobile-specific fixes for simulators */
 @media (max-width: 767px) {
   /* Fixed simulator heights on mobile */
   .h-[800px] {
-    height: 500px !important;
+    height: 550px !important;
     overflow: hidden;
-    margin-bottom: 20px;
+    margin-bottom: 0;
   }
   
   .h-[600px] {
-    height: 400px !important;
+    height: 450px !important;
   }
   
   /* Better button spacing on mobile */
@@ -353,15 +375,16 @@
     display: block;
     width: 100%;
     text-align: center;
+    margin-bottom: 8px;
   }
   
   /* Adjust spacing for simulator controls */
   .p-8 {
-    padding: 1.5rem;
+    padding: 1.25rem;
   }
   
   .gap-8 {
-    gap: 1.5rem;
+    gap: 1.25rem;
   }
   
   /* Better mobile form inputs */
@@ -371,6 +394,70 @@
   
   /* Fix for device frame container */
   .device-body {
-    max-width: 280px;
+    max-width: 270px;
   }
+}
+
+/* Enhanced scrollbar for simulators */
+.app-simulator-container ::-webkit-scrollbar,
+.website-frame ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.app-simulator-container ::-webkit-scrollbar-track,
+.website-frame ::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.05);
+  border-radius: 3px;
+}
+
+.app-simulator-container ::-webkit-scrollbar-thumb,
+.website-frame ::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.2);
+  border-radius: 3px;
+}
+
+.app-simulator-container ::-webkit-scrollbar-thumb:hover,
+.website-frame ::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,0.3);
+}
+
+/* Enhanced simulator option selection effects */
+.simulator-option {
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.simulator-option:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.simulator-option.active {
+  border-color: #8B5CF6;
+  background-color: rgba(139, 92, 246, 0.05);
+}
+
+/* Simulator status indicators */
+.status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.status-indicator.online {
+  background-color: #10B981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+}
+
+.status-indicator.offline {
+  background-color: #EF4444;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+}
+
+.status-indicator.idle {
+  background-color: #F59E0B;
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
 }

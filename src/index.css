@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -100,6 +99,7 @@
     transform-style: preserve-3d;
     animation: float 6s ease-in-out infinite, rotate3d 15s linear infinite;
     will-change: transform;
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
   }
 
   .rotate-3d {
@@ -198,6 +198,36 @@
   .iphone-notch {
     @apply absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-[30px] bg-black rounded-b-xl;
     z-index: 10;
+  }
+
+  /* 3D Logo Animation - Enhanced */
+  .logo-3d {
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease;
+    position: relative;
+    z-index: 10;
+    filter: drop-shadow(0 10px 25px rgba(0,0,0,0.15));
+  }
+
+  .logo-3d:hover {
+    transform: perspective(1000px) rotateY(15deg) rotateX(-5deg) translateZ(20px);
+    filter: drop-shadow(0 20px 30px rgba(0,0,0,0.25));
+  }
+
+  .logo-3d::before {
+    content: '';
+    position: absolute;
+    inset: -5px;
+    background: linear-gradient(45deg, #8B5CF6, #1A2B47, #ED422A);
+    z-index: -1;
+    filter: blur(10px);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    border-radius: inherit;
+  }
+
+  .logo-3d:hover::before {
+    opacity: 0.7;
   }
 
   /* 3D Cube with mobile optimizations */
