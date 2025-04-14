@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -241,7 +242,12 @@ export const AppSimulator: React.FC = () => {
   };
 
   const handleGuidedDemo = () => {
-    startGuidedDemo(config, setConfig, setShowGuide, setDemoStep);
+    startGuidedDemo(
+      config,
+      setConfig,
+      setShowGuide,
+      setDemoStep
+    );
     toast.success('Demonstração guiada iniciada!', {
       description: 'Siga as instruções na tela.'
     });
