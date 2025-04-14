@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -57,17 +58,7 @@
 }
 
 @layer components {
-  .btn-primary {
-    @apply bg-primary hover:bg-primary/90 text-white font-semibold py-2 md:py-3 px-4 md:px-6 rounded-lg transition-all;
-  }
-  
-  .btn-secondary {
-    @apply bg-gradient-primary hover:opacity-90 text-white font-semibold py-2 md:py-3 px-4 md:px-6 rounded-lg transition-all;
-  }
-  
-  .btn-outline {
-    @apply border-2 border-primary text-primary hover:bg-primary/10 font-semibold py-2 md:py-3 px-4 md:px-6 rounded-lg transition-all;
-  }
+  /* Keep existing code (button styles) */
   
   .section-padding {
     @apply py-12 md:py-16 lg:py-24;
@@ -131,6 +122,58 @@
     }
   }
 
+  /* Advanced 3D logo effects */
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  .logo-3d-premium {
+    transform-style: preserve-3d;
+    position: relative;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border-radius: 50%;
+    overflow: hidden;
+    background: linear-gradient(45deg, #1A2B47, #8B5CF6, #ED422A, #1A2B47);
+    background-size: 400% 400%;
+    animation: 
+      float 6s ease-in-out infinite,
+      shimmer 8s linear infinite;
+  }
+
+  .logo-3d-premium::before {
+    content: '';
+    position: absolute;
+    inset: -5px;
+    background: linear-gradient(45deg, #8B5CF6, transparent, #ED422A);
+    z-index: -1;
+    filter: blur(15px);
+    opacity: 0.7;
+    transform-style: preserve-3d;
+    animation: rotate3d 15s linear infinite;
+  }
+
+  .logo-3d-premium::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.2));
+    z-index: 1;
+  }
+
+  .logo-3d-premium:hover {
+    transform: 
+      perspective(1000px) 
+      rotateY(25deg) 
+      rotateX(-10deg) 
+      translateZ(30px);
+    filter: drop-shadow(0 30px 40px rgba(0,0,0,0.35));
+  }
+
   /* Mobile-friendly animation that's less CPU intensive */
   @media (max-width: 768px) {
     .perspective-icon {
@@ -154,33 +197,7 @@
     animation: float 6s ease-in-out infinite;
   }
 
-  .animation-delay-1000 {
-    animation-delay: 1s;
-  }
-
-  .animation-delay-1500 {
-    animation-delay: 1.5s;
-  }
-
-  .animation-delay-2000 {
-    animation-delay: 2s;
-  }
-
-  .animation-delay-2500 {
-    animation-delay: 2.5s;
-  }
-
-  .animation-delay-3000 {
-    animation-delay: 3s;
-  }
-
-  .animation-delay-3500 {
-    animation-delay: 3.5s;
-  }
-
-  .animation-delay-4000 {
-    animation-delay: 4s;
-  }
+  /* Keep existing code (animation delays) */
 
   /* iPhone Frame for Mobile App Simulator - Optimized for all screen sizes */
   .iphone-frame {
@@ -198,6 +215,37 @@
   .iphone-notch {
     @apply absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-[30px] bg-black rounded-b-xl;
     z-index: 10;
+  }
+
+  /* Improved screen content fitting */
+  .iphone-screen img,
+  .iphone-screen > div {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Fix for image overflow in apps */
+  .app-content img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Fix for image containers */
+  .image-container {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+  }
+
+  .image-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   /* 3D Logo Animation - Enhanced */

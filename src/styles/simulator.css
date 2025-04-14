@@ -1,3 +1,4 @@
+
 /* Device frame styling - Enhanced for better 3D effect */
 .device-frame {
   perspective: 1200px;
@@ -230,6 +231,21 @@
   box-shadow: inset 0 0 15px rgba(0,0,0,0.1);
 }
 
+/* Improved image sizing within the simulator */
+.device-screen img,
+.app-simulator-container img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  aspect-ratio: auto;
+}
+
+/* App content should fill the screen */
+.device-screen > div {
+  height: 100%;
+  width: 100%;
+}
+
 /* Scale adjustments to ensure the device is fully visible on all screens */
 @media (max-width: 768px) {
   .device-frame {
@@ -241,6 +257,13 @@
     padding: 0;
     margin-top: -20px;
     margin-bottom: -20px;
+  }
+  
+  /* Ensure images fit within mobile screens */
+  .device-screen img {
+    max-height: 100%;
+    width: auto;
+    object-fit: cover;
   }
 }
 
@@ -351,10 +374,55 @@
 .logo-3d {
   transform-style: preserve-3d;
   transition: transform 0.3s ease;
+  animation: float-3d 5s ease-in-out infinite;
 }
 
 .logo-3d:hover {
   animation: float-3d 3s ease-in-out infinite;
+}
+
+/* Enhanced 3D Logo with dramatic effects */
+@keyframes logo-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(139, 92, 246, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(139, 92, 246, 0);
+  }
+}
+
+.logo-3d-enhanced {
+  transform-style: preserve-3d;
+  position: relative;
+  transition: all 0.5s ease;
+  animation: float-3d 5s ease-in-out infinite;
+  filter: drop-shadow(0 10px 25px rgba(0,0,0,0.25));
+  border-radius: 50%;
+}
+
+.logo-3d-enhanced::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(45deg, #8B5CF6, #1A2B47, #ED422A);
+  z-index: -1;
+  filter: blur(10px);
+  opacity: 0.7;
+  border-radius: inherit;
+  animation: logo-pulse 3s infinite;
+}
+
+.logo-3d-enhanced:hover {
+  transform: perspective(1000px) rotateY(25deg) rotateX(-10deg) translateZ(30px);
+  filter: drop-shadow(0 30px 40px rgba(0,0,0,0.35));
+}
+
+.logo-3d-enhanced:hover::before {
+  opacity: 0.9;
+  filter: blur(15px);
 }
 
 /* Mobile-specific fixes for simulators */
@@ -460,4 +528,110 @@
 .status-indicator.idle {
   background-color: #F59E0B;
   box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
+}
+
+/* Improved image upload functionality styling */
+.image-upload-container {
+  position: relative;
+  border: 2px dashed #E5E7EB;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  background-color: #F9FAFB;
+}
+
+.image-upload-container:hover {
+  border-color: #8B5CF6;
+  background-color: rgba(139, 92, 246, 0.05);
+}
+
+.image-upload-container.active {
+  border-color: #10B981;
+  background-color: rgba(16, 185, 129, 0.05);
+}
+
+.image-upload-preview {
+  max-width: 100%;
+  max-height: 120px;
+  object-fit: contain;
+  margin: 0 auto 12px;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.image-upload-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 6px;
+}
+
+.image-upload-container:hover .image-upload-overlay {
+  opacity: 1;
+}
+
+/* Animation for successful upload */
+@keyframes upload-success {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.upload-success-animation {
+  animation: upload-success 0.5s ease-out forwards;
+}
+
+/* Enhanced button pulse animation for export feature */
+@keyframes export-btn-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(237, 66, 42, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(237, 66, 42, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(237, 66, 42, 0);
+  }
+}
+
+.export-btn-pulse {
+  animation: export-btn-pulse 2s infinite;
+}
+
+/* Button focus effects for accessibility */
+button:focus-visible {
+  outline: 2px solid #8B5CF6;
+  outline-offset: 2px;
+}
+
+/* Upload progress indicator */
+.upload-progress {
+  width: 100%;
+  height: 4px;
+  background-color: #E5E7EB;
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.upload-progress-bar {
+  height: 100%;
+  background-color: #8B5CF6;
+  transition: width 0.3s ease;
 }

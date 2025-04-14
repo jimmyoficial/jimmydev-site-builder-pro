@@ -114,7 +114,9 @@ export const AppSimulator: React.FC = () => {
           ...config,
           logo: e.target?.result as string,
         });
-        toast.success('Logo carregado com sucesso!');
+        toast.success('Logo carregado com sucesso!', {
+          description: 'O logo foi atualizado no aplicativo.'
+        });
       } else if (imageUploadType === 'custom' && customImageKey) {
         const updatedCustomImages = {
           ...config.customImages,
@@ -125,7 +127,9 @@ export const AppSimulator: React.FC = () => {
           ...config,
           customImages: updatedCustomImages
         });
-        toast.success(`Imagem personalizada carregada com sucesso!`);
+        toast.success(`Imagem personalizada carregada com sucesso!`, {
+          description: `A imagem ${customImageKey} foi atualizada no aplicativo.`
+        });
       }
     };
     reader.readAsDataURL(file);
@@ -145,23 +149,29 @@ export const AppSimulator: React.FC = () => {
 
     const reader = new FileReader();
     reader.onload = (e) => {
-      if (imageUploadType === 'logo') {
-        setConfig({
-          ...config,
-          logo: e.target?.result as string,
-        });
-        toast.success('Logo carregado com sucesso!');
-      } else if (imageUploadType === 'custom' && customImageKey) {
-        const updatedCustomImages = {
-          ...config.customImages,
-          [customImageKey]: e.target?.result as string
-        };
-        
-        setConfig({
-          ...config,
-          customImages: updatedCustomImages
-        });
-        toast.success(`Imagem personalizada carregada com sucesso!`);
+      if (e.target?.result) {
+        if (imageUploadType === 'logo') {
+          setConfig({
+            ...config,
+            logo: e.target.result as string,
+          });
+          toast.success('Logo carregado com sucesso!', {
+            description: 'O logo foi atualizado no aplicativo.'
+          });
+        } else if (imageUploadType === 'custom' && customImageKey) {
+          const updatedCustomImages = {
+            ...config.customImages,
+            [customImageKey]: e.target.result as string
+          };
+          
+          setConfig({
+            ...config,
+            customImages: updatedCustomImages
+          });
+          toast.success(`Imagem personalizada carregada com sucesso!`, {
+            description: `A imagem ${customImageKey} foi atualizada no aplicativo.`
+          });
+        }
       }
     };
     reader.readAsDataURL(file);
@@ -179,17 +189,24 @@ export const AppSimulator: React.FC = () => {
   };
 
   const handleExportConfig = () => {
-    exportConfiguration();
+    exportConfiguration(config);
+    toast.success('Configuração exportada com sucesso!', {
+      description: 'O arquivo foi baixado automaticamente.'
+    });
     trackEvent('export_configuration');
   };
 
   const handleExportGif = () => {
-    exportAsGif();
+    exportAsGif(deviceRef);
+    toast.success('GIF gerado com sucesso!', {
+      description: 'O arquivo foi baixado automaticamente.'
+    });
     trackEvent('export_as_gif');
   };
 
   const handleSaveAsTemplate = () => {
-    saveAsTemplate();
+    saveAsTemplate(config);
+    toast.success('Modelo salvo com sucesso!');
     trackEvent('save_as_template');
   };
 
@@ -225,6 +242,9 @@ export const AppSimulator: React.FC = () => {
 
   const handleGuidedDemo = () => {
     startGuidedDemo(config, setConfig, setShowGuide, setDemoStep);
+    toast.success('Demonstração guiada iniciada!', {
+      description: 'Siga as instruções na tela.'
+    });
   };
 
   const ImageUploader = ({ 
@@ -249,16 +269,28 @@ export const AppSimulator: React.FC = () => {
     
     return (
       <div 
-        className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center cursor-pointer hover:border-primary transition-colors"
+        className="image-upload-container group"
         onClick={handleClick}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
+        onDragEnter={(e) => {
+          e.preventDefault();
+          e.currentTarget.classList.add('active');
+        }}
+        onDragLeave={(e) => {
+          e.preventDefault();
+          e.currentTarget.classList.remove('active');
+        }}
       >
         {currentImage ? (
           <div className="flex flex-col items-center">
-            <img src={currentImage} alt="Preview" className="max-h-16 mb-2 object-contain" />
+            <img 
+              src={currentImage} 
+              alt="Preview" 
+              className="image-upload-preview"
+            />
             <button 
-              className="text-sm text-primary flex items-center"
+              className="text-sm text-primary flex items-center mt-2"
               onClick={(e) => {
                 e.stopPropagation();
                 handleClick();
@@ -267,15 +299,21 @@ export const AppSimulator: React.FC = () => {
               <Upload size={14} className="mr-1" />
               Trocar imagem
             </button>
+            <div className="image-upload-overlay">
+              <Upload size={24} className="text-white" />
+            </div>
           </div>
         ) : (
-          <div className="flex flex-col items-center">
-            <Image className="h-8 w-8 text-gray-400 mb-1" />
-            <p className="text-xs text-gray-500 mb-1">
+          <div className="flex flex-col items-center py-4">
+            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-2 group-hover:bg-gray-200 transition-colors">
+              <Upload className="h-8 w-8 text-gray-400" />
+            </div>
+            <p className="text-sm text-gray-500 mb-1">
               {type === 'logo' 
                 ? 'Arraste seu logo ou clique' 
                 : 'Arraste uma imagem ou clique'}
             </p>
+            <p className="text-xs text-gray-400">PNG, JPG, SVG (máx. 2MB)</p>
           </div>
         )}
         <input 
@@ -453,6 +491,8 @@ export const AppSimulator: React.FC = () => {
           >
             {deviceStyle.notchStyle === 'dynamic-island' ? (
               <div className="absolute top-0 left-1/2 transform -translate-x-1/2 h-[35px] w-[130px] bg-black rounded-b-[16px] z-10"></div>
+            ) : deviceStyle.notchStyle === 'notch' ? (
+              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 h-[30px] w-[120px] bg-black rounded-b-xl z-10"></div>
             ) : (
               <div className="absolute top-[12px] right-[80px] h-[12px] w-[12px] bg-black rounded-full z-10 border border-gray-800"></div>
             )}
@@ -493,7 +533,7 @@ export const AppSimulator: React.FC = () => {
                 </div>
               </div>
               
-              <div className="h-full w-full">
+              <div className="h-full w-full app-content">
                 {getAppComponent()}
               </div>
             </div>
@@ -694,11 +734,11 @@ export const AppSimulator: React.FC = () => {
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <div className="text-xs text-gray-500 mb-1">Banner principal</div>
-                  <ImageUploader type="custom" imageKey="post1" />
+                  <ImageUploader type="custom" imageKey="banner" />
                 </div>
                 <div>
-                  <div className="text-xs text-gray-500 mb-1">Produto 1</div>
-                  <ImageUploader type="custom" imageKey="product1" />
+                  <div className="text-xs text-gray-500 mb-1">Produto destaque</div>
+                  <ImageUploader type="custom" imageKey="product" />
                 </div>
               </div>
             </div>
@@ -706,8 +746,10 @@ export const AppSimulator: React.FC = () => {
             <div className="flex flex-col gap-3">
               <Button 
                 onClick={handleGuidedDemo} 
-                className="btn-primary flex items-center justify-center bg-primary export-btn-pulse"
+                className="flex items-center justify-center"
                 variant="default"
+                size="full"
+                animation="pulse"
                 data-testid="start-demo-btn"
               >
                 <Play size={18} className="mr-2" />
@@ -715,8 +757,9 @@ export const AppSimulator: React.FC = () => {
               </Button>
               <Button 
                 onClick={handleExportConfig} 
-                className="btn-primary flex items-center justify-center"
+                className="flex items-center justify-center"
                 variant="default"
+                size="full"
                 data-testid="export-config-btn"
               >
                 <ClipboardCheck size={18} className="mr-2" />
@@ -724,8 +767,9 @@ export const AppSimulator: React.FC = () => {
               </Button>
               <Button 
                 onClick={handleExportGif} 
-                className="btn-outline flex items-center justify-center"
+                className="flex items-center justify-center"
                 variant="outline"
+                size="full"
                 data-testid="export-gif-btn"
               >
                 <Video size={18} className="mr-2" />
@@ -733,8 +777,9 @@ export const AppSimulator: React.FC = () => {
               </Button>
               <Button 
                 onClick={handleReset} 
-                className="btn-outline flex items-center justify-center"
+                className="flex items-center justify-center"
                 variant="outline"
+                size="full"
                 data-testid="reset-btn"
               >
                 <RotateCcw size={18} className="mr-2" />
