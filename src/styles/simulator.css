@@ -1,16 +1,15 @@
-
 /* Device frame styling - Enhanced for better 3D effect */
 .device-frame {
   perspective: 1200px;
   transform-style: preserve-3d;
-  transform: rotateY(0deg) rotateX(0deg);
   transition: transform 0.5s ease;
   margin: 0 auto;
   filter: drop-shadow(0 20px 40px rgba(0,0,0,0.15));
+  max-width: 100%;
+  height: auto;
 }
 
 .device-frame:hover {
-  transform: rotateY(-7deg) rotateX(3deg);
   filter: drop-shadow(0 30px 60px rgba(0,0,0,0.2));
 }
 
@@ -596,4 +595,37 @@ button:focus-visible {
   width: 100%;
   height: 100%;
   position: relative;
+  overflow: hidden;
+}
+
+/* Fix for smartphone display */
+.simulator-container-full {
+  position: relative;
+  height: auto;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  margin: 1rem 0;
+}
+
+/* Ensure smartphone is contained within the container */
+.device-frame-responsive {
+  display: inline-block;
+  width: auto;
+  height: auto;
+  max-height: 100%;
+  transform-origin: center center;
+}
+
+/* Fix for device scaling */
+.device-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: visible;
 }

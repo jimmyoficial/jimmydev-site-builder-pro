@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -480,93 +479,96 @@ export const AppSimulator: React.FC = () => {
           </div>
         )}
         
-        <div 
-          className="device-frame relative"
-          style={{
-            width: `${deviceStyle.width}px`,
-            boxShadow: deviceStyle.shadowStyle,
-          }}
-        >
+        <div className="device-wrapper">
           <div 
-            className="device-body rounded-[40px] overflow-hidden relative"
+            className="device-frame"
             style={{
-              backgroundColor: deviceStyle.bezelColor,
-              borderRadius: deviceStyle.borderRadius,
-              padding: `${deviceStyle.bezelWidth}px`,
+              transform: `scale(${deviceStyle.scale})`,
             }}
           >
-            {deviceStyle.notchStyle === 'dynamic-island' ? (
-              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 h-[35px] w-[130px] bg-black rounded-b-[16px] z-10"></div>
-            ) : deviceStyle.notchStyle === 'notch' ? (
-              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 h-[30px] w-[120px] bg-black rounded-b-xl z-10"></div>
-            ) : (
-              <div className="absolute top-[12px] right-[80px] h-[12px] w-[12px] bg-black rounded-full z-10 border border-gray-800"></div>
-            )}
-            
             <div 
-              className="device-screen rounded-[32px] overflow-hidden bg-white relative"
+              className="device-body rounded-[40px] overflow-hidden relative"
               style={{
+                backgroundColor: deviceStyle.bezelColor,
+                borderRadius: deviceStyle.borderRadius,
+                padding: `${deviceStyle.bezelWidth}px`,
+                width: `${deviceStyle.width}px`,
                 height: `${deviceStyle.height}px`,
-                width: `${deviceStyle.width - (deviceStyle.bezelWidth * 2)}px`,
               }}
             >
-              <div className="h-8 bg-transparent absolute top-0 left-0 right-0 z-10 flex justify-between items-center px-5">
-                <div className="text-xs font-medium">
-                  {new Date().getHours()}:{String(new Date().getMinutes()).padStart(2, '0')}
-                </div>
-                <div className="flex items-center space-x-1">
-                  <div className="h-3 w-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M6 7C6 5.6 7.1 4.5 8.5 4.5C9.9 4.5 11 5.6 11 7S9.9 9.5 8.5 9.5C7.1 9.5 6 8.4 6 7ZM20 9H12V7H20V9ZM6 15C6 13.6 7.1 12.5 8.5 12.5C9.9 12.5 11 13.6 11 15S9.9 17.5 8.5 17.5C7.1 17.5 6 16.4 6 15ZM20 17H12V15H20V17Z" />
-                    </svg>
-                  </div>
-                  <div className="h-3 w-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M17 20H20V22H4V20H7C7 17.24 9.24 15 12 15C14.76 15 17 17.24 17 20ZM12 13C9.33 13 4 14.34 4 17V20H1V17C1 13.5 8.67 11 12 11C15.33 11 23 13.5 23 17V20H20V17C20 14.34 14.67 13 12 13ZM12 6C13.1 6 14 6.9 14 8C14 9.1 13.1 10 12 10C10.9 10 10 9.1 10 8C10 6.9 10.9 6 12 6ZM12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4Z" />
-                    </svg>
-                  </div>
-                  <div className="h-3 w-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M4 18H6.5V21H4V18ZM8 18H10.5V21H8V18ZM12 18H14.5V21H12V18ZM16 18H18.5V21H16V18ZM19 10V8H22V6H19V4H17V6H14V4H12V6H9V4H7V6H4V8H7V10H4V12H7V14H4V16H7V18H9V16H12V18H14V16H17V18H19V16H22V14H19V12H22V10H19ZM10 8H12V10H10V8ZM10 12H12V14H10V12ZM14 8H16V10H14V8ZM14 12H16V14H14V12Z" />
-                    </svg>
-                  </div>
-                  <div className="h-3 w-8 flex items-end justify-end space-x-0.5">
-                    <div className="h-1 w-1 bg-current rounded-full"></div>
-                    <div className="h-2 w-1 bg-current rounded-full"></div>
-                    <div className="h-3 w-1 bg-current rounded-full"></div>
-                    <div className="h-2 w-1 bg-current rounded-full"></div>
-                  </div>
-                </div>
-              </div>
+              {deviceStyle.notchStyle === 'dynamic-island' ? (
+                <div className="absolute top-0 left-1/2 transform -translate-x-1/2 h-[35px] w-[130px] bg-black rounded-b-[16px] z-10"></div>
+              ) : deviceStyle.notchStyle === 'notch' ? (
+                <div className="absolute top-0 left-1/2 transform -translate-x-1/2 h-[30px] w-[120px] bg-black rounded-b-xl z-10"></div>
+              ) : deviceStyle.notchStyle === 'punch-hole' && (
+                <div className="absolute top-[12px] right-[80px] h-[12px] w-[12px] bg-black rounded-full z-10 border border-gray-800"></div>
+              )}
               
-              <div className="h-full w-full app-content">
-                {getAppComponent()}
+              <div 
+                className="device-screen rounded-[32px] overflow-hidden bg-white relative"
+                style={{
+                  height: `${deviceStyle.height - (deviceStyle.bezelWidth * 2)}px`,
+                  width: `${deviceStyle.width - (deviceStyle.bezelWidth * 2)}px`,
+                }}
+              >
+                <div className="h-8 bg-transparent absolute top-0 left-0 right-0 z-10 flex justify-between items-center px-5">
+                  <div className="text-xs font-medium">
+                    {new Date().getHours()}:{String(new Date().getMinutes()).padStart(2, '0')}
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <div className="h-3 w-3">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M6 7C6 5.6 7.1 4.5 8.5 4.5C9.9 4.5 11 5.6 11 7S9.9 9.5 8.5 9.5C7.1 9.5 6 8.4 6 7ZM20 9H12V7H20V9ZM6 15C6 13.6 7.1 12.5 8.5 12.5C9.9 12.5 11 13.6 11 15S9.9 17.5 8.5 17.5C7.1 17.5 6 16.4 6 15ZM20 17H12V15H20V17Z" />
+                      </svg>
+                    </div>
+                    <div className="h-3 w-3">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17 20H20V22H4V20H7C7 17.24 9.24 15 12 15C14.76 15 17 17.24 17 20ZM12 13C9.33 13 4 14.34 4 17V20H1V17C1 13.5 8.67 11 12 11C15.33 11 23 13.5 23 17V20H20V17C20 14.34 14.67 13 12 13ZM12 6C13.1 6 14 6.9 14 8C14 9.1 13.1 10 12 10C10.9 10 10 9.1 10 8C10 6.9 10.9 6 12 6ZM12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4Z" />
+                      </svg>
+                    </div>
+                    <div className="h-3 w-3">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M4 18H6.5V21H4V18ZM8 18H10.5V21H8V18ZM12 18H14.5V21H12V18ZM16 18H18.5V21H16V18ZM19 10V8H22V6H19V4H17V6H14V4H12V6H9V4H7V6H4V8H7V10H4V12H7V14H4V16H7V18H9V16H12V18H14V16H17V18H19V16H22V14H19V12H22V10H19ZM10 8H12V10H10V8ZM10 12H12V14H10V12ZM14 8H16V10H14V8ZM14 12H16V14H14V12Z" />
+                      </svg>
+                    </div>
+                    <div className="h-3 w-8 flex items-end justify-end space-x-0.5">
+                      <div className="h-1 w-1 bg-current rounded-full"></div>
+                      <div className="h-2 w-1 bg-current rounded-full"></div>
+                      <div className="h-3 w-1 bg-current rounded-full"></div>
+                      <div className="h-2 w-1 bg-current rounded-full"></div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="h-full w-full app-content">
+                  {getAppComponent()}
+                </div>
               </div>
             </div>
+            
+            <div 
+              className="absolute -right-[2px] top-[140px] h-[70px] w-[4px] rounded-l-sm"
+              style={{ 
+                backgroundColor: deviceStyle.bezelColor,
+                background: 'linear-gradient(to right, #555, #222)',
+              }}
+            ></div>
+            
+            <div 
+              className="absolute -left-[2px] top-[120px] h-[35px] w-[4px] rounded-r-sm"
+              style={{ 
+                backgroundColor: deviceStyle.bezelColor,
+                background: 'linear-gradient(to left, #555, #222)',
+              }}
+            ></div>
+            <div 
+              className="absolute -left-[2px] top-[170px] h-[35px] w-[4px] rounded-r-sm"
+              style={{ 
+                backgroundColor: deviceStyle.bezelColor,
+                background: 'linear-gradient(to left, #555, #222)',
+              }}
+            ></div>
           </div>
-          
-          <div 
-            className="absolute -right-[2px] top-[140px] h-[70px] w-[4px] rounded-l-sm"
-            style={{ 
-              backgroundColor: deviceStyle.bezelColor,
-              background: 'linear-gradient(to right, #555, #222)',
-            }}
-          ></div>
-          
-          <div 
-            className="absolute -left-[2px] top-[120px] h-[35px] w-[4px] rounded-r-sm"
-            style={{ 
-              backgroundColor: deviceStyle.bezelColor,
-              background: 'linear-gradient(to left, #555, #222)',
-            }}
-          ></div>
-          <div 
-            className="absolute -left-[2px] top-[170px] h-[35px] w-[4px] rounded-r-sm"
-            style={{ 
-              backgroundColor: deviceStyle.bezelColor,
-              background: 'linear-gradient(to left, #555, #222)',
-            }}
-          ></div>
         </div>
       </div>
     );
@@ -834,7 +836,7 @@ export const AppSimulator: React.FC = () => {
                 </div>
               </div>
               
-              <div className="h-[800px] overflow-auto bg-slate-100 rounded-lg p-4">
+              <div className="simulator-container-full bg-slate-100 rounded-lg p-4">
                 {viewMode === 'device' ? renderDeviceContent() : <AnalyticsPanel />}
               </div>
             </div>

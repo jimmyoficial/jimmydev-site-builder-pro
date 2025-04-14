@@ -12,7 +12,7 @@ export const deviceModels = {
     borderRadius: '44px',
     notchStyle: 'dynamic-island',
     shadowStyle: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-    scale: 1,
+    scale: 0.85, // Reduced scale for better fit
   },
   pixel7: {
     name: 'Pixel 7',
@@ -23,7 +23,7 @@ export const deviceModels = {
     borderRadius: '38px',
     notchStyle: 'punch-hole',
     shadowStyle: '0 20px 40px -10px rgba(0, 0, 0, 0.3)',
-    scale: 0.95,
+    scale: 0.8, // Reduced scale for better fit
   },
   samsung: {
     name: 'Galaxy S22',
@@ -34,7 +34,7 @@ export const deviceModels = {
     borderRadius: '36px',
     notchStyle: 'punch-hole',
     shadowStyle: '0 15px 30px -8px rgba(0, 0, 0, 0.35)',
-    scale: 0.95,
+    scale: 0.8, // Reduced scale for better fit
   },
   generic: {
     name: 'Generic',
@@ -45,7 +45,7 @@ export const deviceModels = {
     borderRadius: '32px',
     notchStyle: 'none',
     shadowStyle: '0 10px 25px -5px rgba(0, 0, 0, 0.2)',
-    scale: 0.9,
+    scale: 0.75, // Reduced scale for better fit
   }
 };
 
