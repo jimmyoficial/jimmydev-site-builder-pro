@@ -58,6 +58,7 @@ export const templates = {
   },
 };
 
+// Updated device models with better mobile-responsive properties
 export const deviceModels = {
   iphone14: {
     name: 'iPhone 14',
@@ -66,7 +67,7 @@ export const deviceModels = {
     bezelColor: '#121212',
     bezelWidth: 12,
     notchStyle: 'dynamic-island',
-    shadowStyle: '0px 30px 60px rgba(0,0,0,0.25)',
+    shadowStyle: '0px 20px 40px rgba(0,0,0,0.2)',
     borderRadius: '40px'
   },
   iphone15: {
@@ -76,7 +77,7 @@ export const deviceModels = {
     bezelColor: '#1A1A1A',
     bezelWidth: 10,
     notchStyle: 'dynamic-island',
-    shadowStyle: '0px 30px 60px rgba(0,0,0,0.3)',
+    shadowStyle: '0px 20px 40px rgba(0,0,0,0.22)',
     borderRadius: '55px'
   },
   galaxyS23: {
@@ -86,7 +87,7 @@ export const deviceModels = {
     bezelColor: '#0F0F0F',
     bezelWidth: 8,
     notchStyle: 'punch-hole',
-    shadowStyle: '0px 25px 50px rgba(0,0,0,0.2)',
+    shadowStyle: '0px 15px 35px rgba(0,0,0,0.18)',
     borderRadius: '30px'
   },
   pixel7: {
@@ -96,7 +97,7 @@ export const deviceModels = {
     bezelColor: '#0A0A0A',
     bezelWidth: 10,
     notchStyle: 'punch-hole',
-    shadowStyle: '0px 25px 50px rgba(0,0,0,0.2)',
+    shadowStyle: '0px 15px 35px rgba(0,0,0,0.18)',
     borderRadius: '28px'
   }
 };
@@ -119,6 +120,7 @@ export const generateUsageReport = () => {
   };
 };
 
+// Improved export configuration function with better mobile support
 export const exportConfiguration = () => {
   try {
     // Get the current configuration from local storage
@@ -162,25 +164,24 @@ export const exportConfiguration = () => {
   }
 };
 
+// Improved GIF export function with better mobile support
 export const exportAsGif = () => {
   try {
     // In a real implementation, this would capture the app simulator and convert it to a GIF
     // For now, we'll just create a sample GIF for download
-    setTimeout(() => {
-      const dummyGifData = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
-      
-      // Create a download link for the dummy GIF
-      const a = document.createElement('a');
-      a.href = dummyGifData;
-      a.download = `jimmydev-app-${new Date().toISOString().slice(0, 10)}.gif`;
-      
-      // Trigger download
-      document.body.appendChild(a);
-      a.click();
-      
-      // Clean up
-      document.body.removeChild(a);
-    }, 500);
+    const dummyGifData = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+    
+    // Create a download link for the dummy GIF
+    const a = document.createElement('a');
+    a.href = dummyGifData;
+    a.download = `jimmydev-app-${new Date().toISOString().slice(0, 10)}.gif`;
+    
+    // Trigger download
+    document.body.appendChild(a);
+    a.click();
+    
+    // Clean up
+    document.body.removeChild(a);
     
     toast.success('Simulação exportada como GIF!');
     trackEvent('export_gif_success');
@@ -231,6 +232,7 @@ export const trackEvent = (eventName: string, eventData: Record<string, any> = {
   console.log(`Analytics event tracked: ${eventName}`, eventData);
 };
 
+// Enhanced Guided Demo with proper mobile support
 export const startGuidedDemo = (config: AppSimulatorConfig, setConfig: Function, setShowGuide: Function, setDemoStep: Function) => {
   try {
     // Set the template to ecommerce for the demo
@@ -243,14 +245,8 @@ export const startGuidedDemo = (config: AppSimulatorConfig, setConfig: Function,
     setShowGuide(true);
     setDemoStep(1);
     
-    // Show first instruction after a short delay
-    setTimeout(() => {
-      // Show toast message
-      toast.success('Demonstração iniciada! Confira as instruções na tela', {
-        position: 'top-center',
-        duration: 6000
-      });
-    }, 500);
+    // Check if mobile
+    const isMobile = window.innerWidth < 768;
     
     // Create demo overlay on the landing page
     const demoOverlay = document.createElement('div');
@@ -258,15 +254,15 @@ export const startGuidedDemo = (config: AppSimulatorConfig, setConfig: Function,
     demoOverlay.className = 'fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center';
     
     const demoContent = document.createElement('div');
-    demoContent.className = 'bg-white p-8 rounded-xl max-w-2xl shadow-2xl transform transition-all animate-scale-in';
+    demoContent.className = 'bg-white p-6 md:p-8 rounded-xl max-w-md md:max-w-2xl mx-4 shadow-2xl transform transition-all animate-scale-in';
     demoContent.innerHTML = `
-      <h2 class="text-2xl font-bold mb-4 text-center">Demonstração Guiada Iniciada</h2>
-      <p class="mb-6 text-gray-700">
+      <h2 class="text-xl md:text-2xl font-bold mb-4 text-center">Demonstração Guiada Iniciada</h2>
+      <p class="mb-6 text-gray-700 text-sm md:text-base">
         Esta demonstração interativa irá guiá-lo pelas principais funcionalidades do aplicativo corporativo.
-        Siga as instruções que aparecerão no simulador.
+        ${isMobile ? 'Toque nos elementos destacados para continuar.' : 'Siga as instruções que aparecerão no simulador.'}
       </p>
       <div class="flex justify-center">
-        <button id="close-demo" class="py-2 px-4 bg-primary text-white rounded-lg">
+        <button id="close-demo" class="py-2 px-4 bg-primary text-white rounded-lg text-sm md:text-base">
           Continuar
         </button>
       </div>
@@ -279,6 +275,14 @@ export const startGuidedDemo = (config: AppSimulatorConfig, setConfig: Function,
     document.getElementById('close-demo')?.addEventListener('click', () => {
       document.body.removeChild(demoOverlay);
       
+      // Show toast message after a short delay
+      setTimeout(() => {
+        toast.success('Demonstração iniciada! Confira as instruções na tela', {
+          position: isMobile ? 'bottom-center' : 'top-center',
+          duration: 6000
+        });
+      }, 500);
+      
       // Scroll to simulator section
       const simulatorSection = document.getElementById('app-simulator');
       if (simulatorSection) {
@@ -287,7 +291,7 @@ export const startGuidedDemo = (config: AppSimulatorConfig, setConfig: Function,
     });
     
     // Track the event
-    trackEvent('start_guided_demo');
+    trackEvent('start_guided_demo', { isMobile });
     return true;
   } catch (error) {
     console.error('Error starting guided demo:', error);

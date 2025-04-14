@@ -45,23 +45,33 @@
   body {
     @apply bg-background text-foreground;
   }
+  
+  /* Mobile-optimized tap targets */
+  a, button, [role="button"] {
+    @apply min-h-[44px] min-w-[44px];
+  }
+  
+  /* Fix input zooming issues on iOS */
+  input, select, textarea {
+    @apply text-base;
+  }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-primary hover:bg-primary/90 text-white font-semibold py-3 px-6 rounded-lg transition-all;
+    @apply bg-primary hover:bg-primary/90 text-white font-semibold py-2 md:py-3 px-4 md:px-6 rounded-lg transition-all;
   }
   
   .btn-secondary {
-    @apply bg-gradient-primary hover:opacity-90 text-white font-semibold py-3 px-6 rounded-lg transition-all;
+    @apply bg-gradient-primary hover:opacity-90 text-white font-semibold py-2 md:py-3 px-4 md:px-6 rounded-lg transition-all;
   }
   
   .btn-outline {
-    @apply border-2 border-primary text-primary hover:bg-primary/10 font-semibold py-3 px-6 rounded-lg transition-all;
+    @apply border-2 border-primary text-primary hover:bg-primary/10 font-semibold py-2 md:py-3 px-4 md:px-6 rounded-lg transition-all;
   }
   
   .section-padding {
-    @apply py-16 md:py-24;
+    @apply py-12 md:py-16 lg:py-24;
   }
   
   .container-custom {
@@ -84,15 +94,17 @@
     @apply bg-gradient-primary bg-clip-text text-transparent;
   }
 
-  /* 3D Animation Effects */
+  /* Enhanced 3D Animation Effects with mobile optimizations */
   .perspective-icon {
     @apply transform transition-transform duration-1000;
     transform-style: preserve-3d;
     animation: float 6s ease-in-out infinite, rotate3d 15s linear infinite;
+    will-change: transform;
   }
 
   .rotate-3d {
     animation: rotate3d 15s linear infinite;
+    will-change: transform;
   }
 
   @keyframes float {
@@ -116,6 +128,25 @@
     }
     100% {
       transform: rotateY(360deg) rotateX(0deg);
+    }
+  }
+
+  /* Mobile-friendly animation that's less CPU intensive */
+  @media (max-width: 768px) {
+    .perspective-icon {
+      animation: float-mobile 8s ease-in-out infinite;
+    }
+    
+    @keyframes float-mobile {
+      0% {
+        transform: translateY(0px) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-10px) rotate(3deg);
+      }
+      100% {
+        transform: translateY(0px) rotate(0deg);
+      }
     }
   }
 
@@ -151,14 +182,17 @@
     animation-delay: 4s;
   }
 
-  /* iPhone Frame for Mobile App Simulator */
+  /* iPhone Frame for Mobile App Simulator - Optimized for all screen sizes */
   .iphone-frame {
-    @apply relative rounded-[40px] bg-black p-2 w-[300px] mx-auto shadow-xl border-8 border-black;
-    height: 600px;
+    @apply relative rounded-[40px] bg-black p-2 mx-auto shadow-xl border-8 border-black;
+    width: 300px;
+    height: auto;
+    aspect-ratio: 9/19.5;
   }
 
   .iphone-screen {
-    @apply rounded-[30px] bg-white h-full w-full overflow-hidden relative;
+    @apply rounded-[30px] bg-white w-full overflow-hidden relative;
+    height: 100%;
   }
 
   .iphone-notch {
@@ -166,46 +200,53 @@
     z-index: 10;
   }
 
-  /* 3D Cube */
+  /* 3D Cube with mobile optimizations */
   .cube {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     position: relative;
     transform-style: preserve-3d;
     animation: rotate 20s infinite linear;
   }
 
+  @media (min-width: 768px) {
+    .cube {
+      width: 100px;
+      height: 100px;
+    }
+  }
+
   .cube-face {
     position: absolute;
-    width: 100px;
-    height: 100px;
+    width: 100%;
+    height: 100%;
     background: rgba(59, 130, 246, 0.1);
     border: 1px solid rgba(59, 130, 246, 0.3);
     opacity: 0.7;
   }
 
   .cube-face-front {
-    transform: translateZ(50px);
+    transform: translateZ(50%);
   }
 
   .cube-face-back {
-    transform: rotateY(180deg) translateZ(50px);
+    transform: rotateY(180deg) translateZ(50%);
   }
 
   .cube-face-right {
-    transform: rotateY(90deg) translateZ(50px);
+    transform: rotateY(90deg) translateZ(50%);
   }
 
   .cube-face-left {
-    transform: rotateY(-90deg) translateZ(50px);
+    transform: rotateY(-90deg) translateZ(50%);
   }
 
   .cube-face-top {
-    transform: rotateX(90deg) translateZ(50px);
+    transform: rotateX(90deg) translateZ(50%);
   }
 
   .cube-face-bottom {
-    transform: rotateX(-90deg) translateZ(50px);
+    transform: rotateX(-90deg) translateZ(50%);
   }
 
   @keyframes rotate {
@@ -217,41 +258,48 @@
     }
   }
 
-  /* 3D Pyramid */
+  /* 3D Pyramid with mobile optimizations */
   .pyramid {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     position: relative;
     transform-style: preserve-3d;
     animation: rotate 15s infinite linear;
   }
 
+  @media (min-width: 768px) {
+    .pyramid {
+      width: 100px;
+      height: 100px;
+    }
+  }
+
   .pyramid-face {
     position: absolute;
-    width: 100px;
-    height: 100px;
+    width: 100%;
+    height: 100%;
     background: rgba(139, 92, 246, 0.1);
     border: 1px solid rgba(139, 92, 246, 0.3);
     opacity: 0.7;
   }
 
   .pyramid-face-front {
-    transform: rotateY(0deg) translateZ(25px) rotateX(30deg);
+    transform: rotateY(0deg) translateZ(25%) rotateX(30deg);
     clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
   }
 
   .pyramid-face-right {
-    transform: rotateY(90deg) translateZ(25px) rotateX(30deg);
+    transform: rotateY(90deg) translateZ(25%) rotateX(30deg);
     clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
   }
 
   .pyramid-face-back {
-    transform: rotateY(180deg) translateZ(25px) rotateX(30deg);
+    transform: rotateY(180deg) translateZ(25%) rotateX(30deg);
     clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
   }
 
   .pyramid-face-left {
-    transform: rotateY(-90deg) translateZ(25px) rotateX(30deg);
+    transform: rotateY(-90deg) translateZ(25%) rotateX(30deg);
     clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
   }
 }

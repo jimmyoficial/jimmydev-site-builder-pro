@@ -5,6 +5,7 @@
   transform-style: preserve-3d;
   transform: rotateY(0deg) rotateX(0deg);
   transition: transform 0.5s ease;
+  margin: 0 auto;
 }
 
 .device-frame:hover {
@@ -37,8 +38,9 @@
 /* iPhone frame styles */
 .iphone-frame {
   position: relative;
-  width: 375px;
-  height: 800px;
+  width: 100%;
+  max-width: 375px;
+  height: auto;
   background-color: #1a1a1a;
   border-radius: 52px;
   box-shadow: 0 50px 100px rgba(0,0,0,0.25);
@@ -46,6 +48,7 @@
   transform: perspective(1000px) rotateY(0deg);
   transition: transform 0.3s ease;
   overflow: hidden;
+  margin: 0 auto;
 }
 
 .iphone-frame:hover {
@@ -59,6 +62,7 @@
   border-radius: 42px;
   overflow: hidden;
   position: relative;
+  aspect-ratio: 9/19.5;
 }
 
 .iphone-notch {
@@ -139,8 +143,8 @@
 
 /* Section padding */
 .section-padding {
-  padding-top: 5rem;
-  padding-bottom: 5rem;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
 }
 
 @media (min-width: 768px) {
@@ -167,21 +171,24 @@
   transform: perspective(800px) rotateY(-15deg) rotateX(-5deg);
 }
 
-/* App simulator container - Updated for better visibility */
+/* App simulator container - Improved for mobile */
 .app-simulator-container {
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px 0;
+  padding: 12px 0;
   overflow: visible;
+  width: 100%;
 }
 
-/* Device body and screen - Adjusted to ensure full visibility */
+/* Device body and screen - Adjusted for mobile visibility */
 .device-body {
-  width: 375px;
-  height: 780px;
   position: relative;
+  width: 100%;
+  max-width: 375px;
+  margin: 0 auto;
+  aspect-ratio: 9/19.5;
 }
 
 .device-screen {
@@ -189,16 +196,29 @@
   width: 100%;
 }
 
-/* Scale adjustments to ensure the device is fully visible */
-@media (min-height: 800px) {
+/* Scale adjustments to ensure the device is fully visible on all screens */
+@media (max-width: 768px) {
   .device-frame {
-    transform: scale(0.95);
+    transform: scale(0.85);
+    margin: 0 auto;
+  }
+  
+  .app-simulator-container {
+    padding: 0;
+    margin-top: -40px;
+    margin-bottom: -40px;
   }
 }
 
-@media (max-height: 799px) {
+@media (max-width: 480px) {
   .device-frame {
-    transform: scale(0.85);
+    transform: scale(0.75);
+    margin: 0 auto;
+  }
+  
+  .app-simulator-container {
+    margin-top: -60px;
+    margin-bottom: -60px;
   }
 }
 
@@ -312,5 +332,45 @@
   }
   100% {
     box-shadow: 0 0 0 0 rgba(237, 66, 42, 0);
+  }
+}
+
+/* Mobile-specific fixes for simulators */
+@media (max-width: 767px) {
+  /* Fixed simulator heights on mobile */
+  .h-[800px] {
+    height: 500px !important;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  
+  .h-[600px] {
+    height: 400px !important;
+  }
+  
+  /* Better button spacing on mobile */
+  .btn-primary, .btn-outline {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+  
+  /* Adjust spacing for simulator controls */
+  .p-8 {
+    padding: 1.5rem;
+  }
+  
+  .gap-8 {
+    gap: 1.5rem;
+  }
+  
+  /* Better mobile form inputs */
+  input[type="text"], input[type="color"] {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+  
+  /* Fix for device frame container */
+  .device-body {
+    max-width: 280px;
   }
 }
