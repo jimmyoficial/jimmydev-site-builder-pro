@@ -4,6 +4,7 @@ import { FloatingForm } from './FloatingForm';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Instagram } from 'lucide-react';
+import ChatButton from './ChatButton';
 
 interface LayoutProps {
   children: ReactNode;
@@ -28,7 +29,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             <a href="#services" className="text-neutral hover:text-primary transition-colors">Serviços</a>
             <a href="#simulator" className="text-neutral hover:text-primary transition-colors">Simulador</a>
             <a href="#differentials" className="text-neutral hover:text-primary transition-colors">Diferenciais</a>
-            <a href="#faq" className="text-neutral hover:text-primary transition-colors">FAQ</a>
+            <a href="/faq" className="text-neutral hover:text-primary transition-colors">FAQ</a>
             <a href="#contact" className="btn-primary">Contato</a>
           </nav>
           <button className="md:hidden text-neutral">
@@ -44,6 +45,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       </main>
 
       <FloatingForm />
+      <ChatButton />
       
       <footer className="bg-secondary text-white py-12">
         <div className="container-custom">
@@ -76,10 +78,10 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             <div>
               <h3 className="text-xl font-bold mb-4">Suporte</h3>
               <ul className="space-y-2">
-                <li><a href="#" onClick={(e) => { e.preventDefault(); setLegalDialogOpen(true); setActiveTab("help"); }} className="text-gray-300 hover:text-white transition-colors">Central de ajuda</a></li>
-                <li><a href="#" onClick={(e) => { e.preventDefault(); setLegalDialogOpen(true); setActiveTab("faq"); }} className="text-gray-300 hover:text-white transition-colors">FAQ</a></li>
-                <li><a href="#" onClick={(e) => { e.preventDefault(); setLegalDialogOpen(true); setActiveTab("privacy"); }} className="text-gray-300 hover:text-white transition-colors">Política de privacidade</a></li>
-                <li><a href="#" onClick={(e) => { e.preventDefault(); setLegalDialogOpen(true); setActiveTab("terms"); }} className="text-gray-300 hover:text-white transition-colors">Termos de serviço</a></li>
+                <li><a href="/help" className="text-gray-300 hover:text-white transition-colors">Central de ajuda</a></li>
+                <li><a href="/faq" className="text-gray-300 hover:text-white transition-colors">FAQ</a></li>
+                <li><a href="/privacy" className="text-gray-300 hover:text-white transition-colors">Política de privacidade</a></li>
+                <li><a href="/terms" className="text-gray-300 hover:text-white transition-colors">Termos de serviço</a></li>
               </ul>
             </div>
             <div>
