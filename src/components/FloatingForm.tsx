@@ -25,8 +25,9 @@ export const FloatingForm: React.FC = () => {
 
   return (
     <>
-      <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-2">
-        <ChatButton />
+      {/* Floating buttons container */}
+      <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-4">
+        {/* Schedule consultation button */}
         <button 
           onClick={() => setIsOpen(true)}
           className="bg-primary text-white rounded-full shadow-lg p-4 flex items-center gap-2 animate-bounce-light"
@@ -36,6 +37,11 @@ export const FloatingForm: React.FC = () => {
             <path d="m9 18 6-6-6-6"></path>
           </svg>
         </button>
+      </div>
+      
+      {/* Chat Button positioned separately above the consultation button */}
+      <div className="fixed bottom-24 right-6 z-40">
+        <ChatButton />
       </div>
       
       {isOpen && (

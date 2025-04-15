@@ -31,7 +31,7 @@ const ChatButton: React.FC = () => {
       {/* Chat Toggle Button */}
       <button 
         onClick={toggleChat}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-primary text-white shadow-lg flex items-center justify-center hover:bg-primary/90 transition-all"
+        className="w-14 h-14 rounded-full bg-primary text-white shadow-lg flex items-center justify-center hover:bg-primary/90 transition-all"
         aria-label="Abrir chat"
       >
         {isOpen ? <X size={24} /> : <MessageCircle size={24} />}
