@@ -1,4 +1,3 @@
-
 import { toast } from 'sonner';
 
 // Device models available in the simulator
@@ -12,7 +11,7 @@ export const deviceModels = {
     borderRadius: '44px',
     notchStyle: 'dynamic-island',
     shadowStyle: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-    scale: 0.85, // Reduced scale for better fit
+    scale: 0.8, // Adjusted for better fit
   },
   pixel7: {
     name: 'Pixel 7',
@@ -23,7 +22,7 @@ export const deviceModels = {
     borderRadius: '38px',
     notchStyle: 'punch-hole',
     shadowStyle: '0 20px 40px -10px rgba(0, 0, 0, 0.3)',
-    scale: 0.8, // Reduced scale for better fit
+    scale: 0.75, // Adjusted for better fit
   },
   samsung: {
     name: 'Galaxy S22',
@@ -34,7 +33,7 @@ export const deviceModels = {
     borderRadius: '36px',
     notchStyle: 'punch-hole',
     shadowStyle: '0 15px 30px -8px rgba(0, 0, 0, 0.35)',
-    scale: 0.8, // Reduced scale for better fit
+    scale: 0.75, // Adjusted for better fit
   },
   generic: {
     name: 'Generic',
@@ -45,7 +44,7 @@ export const deviceModels = {
     borderRadius: '32px',
     notchStyle: 'none',
     shadowStyle: '0 10px 25px -5px rgba(0, 0, 0, 0.2)',
-    scale: 0.75, // Reduced scale for better fit
+    scale: 0.7, // Adjusted for better fit
   }
 };
 
@@ -90,6 +89,19 @@ export const defaultConfig: AppSimulatorConfig = {
   darkMode: false,
   customImages: {},
 };
+
+// Helper function to get placeholder images
+export function getPlaceholderImage(type: string): string {
+  const placeholders = {
+    banner: 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=800&q=80',
+    product: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=800&q=80',
+    profile: 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7?auto=format&fit=crop&w=800&q=80',
+    technology: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80',
+    code: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=800&q=80'
+  };
+  
+  return placeholders[type as keyof typeof placeholders] || placeholders.banner;
+}
 
 // Export configuration as JSON
 export function exportConfiguration(config: AppSimulatorConfig) {
@@ -182,4 +194,19 @@ export function saveAsTemplate(config: AppSimulatorConfig) {
   // In a real app, this would save to backend or localStorage
   localStorage.setItem('saved_template', JSON.stringify(config));
   trackEvent('template_saved');
+  
+  toast.success('Template salvo com sucesso!', {
+    description: 'Suas configurações foram salvas como modelo.'
+  });
+}
+
+// Get correct image for app content
+export function getAppImage(config: AppSimulatorConfig, imageKey: string): string {
+  // Check if we have a custom image first
+  if (config.customImages && config.customImages[imageKey]) {
+    return config.customImages[imageKey];
+  }
+  
+  // Otherwise return a placeholder
+  return getPlaceholderImage(imageKey);
 }

@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -29,7 +30,9 @@ import {
   generateUsageReport,
   trackEvent,
   startGuidedDemo,
-  saveAsTemplate
+  saveAsTemplate,
+  getAppImage,
+  getPlaceholderImage
 } from '@/utils/simulatorUtils';
 import { EcommerceApp } from './app-templates/EcommerceApp';
 import { SocialApp } from './app-templates/SocialApp';
@@ -198,15 +201,11 @@ export const AppSimulator: React.FC = () => {
 
   const handleExportGif = () => {
     exportAsGif(deviceRef);
-    toast.success('GIF gerado com sucesso!', {
-      description: 'O arquivo foi baixado automaticamente.'
-    });
     trackEvent('export_as_gif');
   };
 
   const handleSaveAsTemplate = () => {
     saveAsTemplate(config);
-    toast.success('Modelo salvo com sucesso!');
     trackEvent('save_as_template');
   };
 
@@ -457,7 +456,7 @@ export const AppSimulator: React.FC = () => {
     const deviceStyle = deviceModels[deviceModel];
     
     return (
-      <div className="h-full flex items-center justify-center relative app-simulator-container" ref={deviceRef}>
+      <div className="device-display-container" ref={deviceRef}>
         {showGuide && (
           <div className="absolute top-4 left-0 right-0 z-20 flex justify-center">
             <div className="bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg border border-gray-200">
@@ -484,16 +483,18 @@ export const AppSimulator: React.FC = () => {
             className="device-frame"
             style={{
               transform: `scale(${deviceStyle.scale})`,
+              transformOrigin: 'center center',
             }}
           >
             <div 
-              className="device-body rounded-[40px] overflow-hidden relative"
+              className="device-body"
               style={{
                 backgroundColor: deviceStyle.bezelColor,
                 borderRadius: deviceStyle.borderRadius,
                 padding: `${deviceStyle.bezelWidth}px`,
                 width: `${deviceStyle.width}px`,
                 height: `${deviceStyle.height}px`,
+                boxShadow: deviceStyle.shadowStyle,
               }}
             >
               {deviceStyle.notchStyle === 'dynamic-island' ? (
@@ -505,10 +506,10 @@ export const AppSimulator: React.FC = () => {
               )}
               
               <div 
-                className="device-screen rounded-[32px] overflow-hidden bg-white relative"
+                className="device-screen"
                 style={{
-                  height: `${deviceStyle.height - (deviceStyle.bezelWidth * 2)}px`,
-                  width: `${deviceStyle.width - (deviceStyle.bezelWidth * 2)}px`,
+                  borderRadius: `calc(${deviceStyle.borderRadius} - ${deviceStyle.bezelWidth * 0.5}px)`,
+                  backgroundColor: config.darkMode ? '#121212' : '#fff',
                 }}
               >
                 <div className="h-8 bg-transparent absolute top-0 left-0 right-0 z-10 flex justify-between items-center px-5">
@@ -540,7 +541,7 @@ export const AppSimulator: React.FC = () => {
                   </div>
                 </div>
                 
-                <div className="h-full w-full app-content">
+                <div className="app-content">
                   {getAppComponent()}
                 </div>
               </div>
@@ -561,6 +562,7 @@ export const AppSimulator: React.FC = () => {
                 background: 'linear-gradient(to left, #555, #222)',
               }}
             ></div>
+            
             <div 
               className="absolute -left-[2px] top-[170px] h-[35px] w-[4px] rounded-r-sm"
               style={{ 
@@ -756,8 +758,6 @@ export const AppSimulator: React.FC = () => {
                 onClick={handleGuidedDemo} 
                 className="flex items-center justify-center"
                 variant="default"
-                size="full"
-                animation="pulse"
                 data-testid="start-demo-btn"
               >
                 <Play size={18} className="mr-2" />
@@ -767,7 +767,6 @@ export const AppSimulator: React.FC = () => {
                 onClick={handleExportConfig} 
                 className="flex items-center justify-center"
                 variant="default"
-                size="full"
                 data-testid="export-config-btn"
               >
                 <ClipboardCheck size={18} className="mr-2" />
@@ -777,7 +776,6 @@ export const AppSimulator: React.FC = () => {
                 onClick={handleExportGif} 
                 className="flex items-center justify-center"
                 variant="outline"
-                size="full"
                 data-testid="export-gif-btn"
               >
                 <Video size={18} className="mr-2" />
@@ -787,7 +785,6 @@ export const AppSimulator: React.FC = () => {
                 onClick={handleReset} 
                 className="flex items-center justify-center"
                 variant="outline"
-                size="full"
                 data-testid="reset-btn"
               >
                 <RotateCcw size={18} className="mr-2" />
@@ -836,7 +833,7 @@ export const AppSimulator: React.FC = () => {
                 </div>
               </div>
               
-              <div className="simulator-container-full bg-slate-100 rounded-lg p-4">
+              <div className="simulator-container-full bg-slate-100 rounded-lg">
                 {viewMode === 'device' ? renderDeviceContent() : <AnalyticsPanel />}
               </div>
             </div>
