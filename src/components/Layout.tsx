@@ -1,4 +1,3 @@
-
 import React, { ReactNode, useState } from 'react';
 import { FloatingForm } from './FloatingForm';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -45,7 +44,6 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       </main>
 
       <FloatingForm />
-      <ChatButton />
       
       <footer className="bg-secondary text-white py-12">
         <div className="container-custom">

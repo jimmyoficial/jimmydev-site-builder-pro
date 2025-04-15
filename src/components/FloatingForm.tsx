@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import { toast } from 'sonner';
+import ChatButton from './ChatButton';
 
 export const FloatingForm: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,15 +25,18 @@ export const FloatingForm: React.FC = () => {
 
   return (
     <>
-      <button 
-        onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 z-40 bg-primary text-white rounded-full shadow-lg p-4 flex items-center gap-2 animate-bounce-light"
-      >
-        <span>Agendar consultoria grátis</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="m9 18 6-6-6-6"></path>
-        </svg>
-      </button>
+      <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-2">
+        <ChatButton />
+        <button 
+          onClick={() => setIsOpen(true)}
+          className="bg-primary text-white rounded-full shadow-lg p-4 flex items-center gap-2 animate-bounce-light"
+        >
+          <span>Agendar consultoria grátis</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="m9 18 6-6-6-6"></path>
+          </svg>
+        </button>
+      </div>
       
       {isOpen && (
         <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
