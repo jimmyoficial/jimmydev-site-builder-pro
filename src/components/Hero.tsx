@@ -1,5 +1,5 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Code, Cpu, Database, Server, CircuitBoard, Smartphone, Laptop, LineChart, BarChart3, PieChart } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -7,7 +7,15 @@ export const Hero: React.FC = () => {
   const heroRef = useRef<HTMLDivElement>(null);
   const logoRef = useRef<HTMLImageElement>(null);
   const isMobile = useIsMobile();
-
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [animationPhase, setAnimationPhase] = useState<'idle' | 'breaking' | 'pieces' | 'rebuilding'>('idle');
+  
+  // Create references for logo pieces
+  const topLeftRef = useRef<HTMLDivElement>(null);
+  const topRightRef = useRef<HTMLDivElement>(null);
+  const bottomLeftRef = useRef<HTMLDivElement>(null);
+  const bottomRightRef = useRef<HTMLDivElement>(null);
+  
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -28,9 +36,34 @@ export const Hero: React.FC = () => {
     };
   }, []);
 
+  // Handle logo click to start the animation
+  const handleLogoClick = () => {
+    if (isAnimating) return;
+    
+    setIsAnimating(true);
+    setAnimationPhase('breaking');
+    
+    const animationSequence = async () => {
+      // Breaking phase
+      await new Promise(resolve => setTimeout(resolve, 500));
+      setAnimationPhase('pieces');
+      
+      // Pieces scattered phase
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      setAnimationPhase('rebuilding');
+      
+      // Rebuilding phase
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setAnimationPhase('idle');
+      setIsAnimating(false);
+    };
+    
+    animationSequence();
+  };
+
   // Enhanced 3D Logo animation effect with improved performance and effects
   useEffect(() => {
-    if (!logoRef.current || isMobile) return;
+    if (!logoRef.current || isMobile || isAnimating) return;
 
     const logo = logoRef.current;
     
@@ -124,11 +157,11 @@ export const Hero: React.FC = () => {
       logo.removeEventListener('mouseleave', handleMouseLeave);
       cancelAnimationFrame(animationFrame);
     };
-  }, [isMobile]);
+  }, [isMobile, isAnimating]);
 
   // Special mobile-only 3D effects
   useEffect(() => {
-    if (!logoRef.current || !isMobile) return;
+    if (!logoRef.current || !isMobile || isAnimating) return;
     
     const logo = logoRef.current;
     let angle = 0;
@@ -171,7 +204,170 @@ export const Hero: React.FC = () => {
         window.removeEventListener('deviceorientation', handleDeviceOrientation);
       }
     };
-  }, [isMobile]);
+  }, [isMobile, isAnimating]);
+
+  // Create explosion animation
+  const renderLogo = () => {
+    const logoSrc = "/lovable-uploads/35f90851-3845-49d7-bf24-cbdccf2974b6.png";
+    
+    if (animationPhase === 'idle' || animationPhase === 'breaking') {
+      const scaleClass = animationPhase === 'breaking' ? 'scale-110' : '';
+      const blurClass = animationPhase === 'breaking' ? 'blur-sm' : '';
+      
+      return (
+        <img 
+          ref={logoRef}
+          src={logoSrc}
+          alt="JimmyDev Logo" 
+          className={`h-20 sm:h-24 md:h-32 lg:h-40 w-auto transition-all duration-300 cursor-pointer ${scaleClass} ${blurClass}`}
+          style={{ 
+            transformStyle: 'preserve-3d',
+            backfaceVisibility: 'hidden',
+            borderRadius: '20%',
+            transform: isMobile ? 'perspective(1200px)' : 'none',
+          }}
+          onClick={handleLogoClick}
+        />
+      );
+    } else if (animationPhase === 'pieces' || animationPhase === 'rebuilding') {
+      // Calculate positions for the pieces
+      const isRebuilding = animationPhase === 'rebuilding';
+      
+      // Piece positions when scattered
+      const scatteredPositions = {
+        topLeft: { x: -100, y: -80, rotate: -45 },
+        topRight: { x: 100, y: -60, rotate: 30 },
+        bottomLeft: { x: -80, y: 100, rotate: 60 },
+        bottomRight: { x: 70, y: 80, rotate: -30 }
+      };
+      
+      // Initial/final positions when assembled
+      const assembledPositions = {
+        topLeft: { x: 0, y: 0, rotate: 0 },
+        topRight: { x: 0, y: 0, rotate: 0 },
+        bottomLeft: { x: 0, y: 0, rotate: 0 },
+        bottomRight: { x: 0, y: 0, rotate: 0 }
+      };
+      
+      // Calculate current positions based on animation phase
+      const positions = isRebuilding ? assembledPositions : scatteredPositions;
+      const transitionDuration = isRebuilding ? '0.8s' : '0.5s';
+      const transitionDelay = isRebuilding ? '0s' : '0.2s';
+      
+      return (
+        <div className="relative" style={{ height: '10rem', width: '10rem' }}>
+          {/* Top Left Piece */}
+          <div 
+            ref={topLeftRef}
+            className="absolute w-1/2 h-1/2 overflow-hidden transition-all"
+            style={{
+              top: 0,
+              left: 0,
+              transform: `translate(${positions.topLeft.x}px, ${positions.topLeft.y}px) rotate(${positions.topLeft.rotate}deg)`,
+              transitionDuration,
+              transitionDelay: isRebuilding ? '0s' : '0s',
+              zIndex: 10
+            }}
+          >
+            <img 
+              src={logoSrc} 
+              alt="Logo Piece" 
+              className="absolute object-cover w-[200%] h-[200%]" 
+              style={{
+                top: 0,
+                left: 0,
+                clipPath: 'polygon(0 0, 50% 0, 50% 50%, 0 50%)'
+              }}
+            />
+          </div>
+          
+          {/* Top Right Piece */}
+          <div 
+            ref={topRightRef}
+            className="absolute w-1/2 h-1/2 overflow-hidden transition-all"
+            style={{
+              top: 0,
+              left: '50%',
+              transform: `translate(${positions.topRight.x}px, ${positions.topRight.y}px) rotate(${positions.topRight.rotate}deg)`,
+              transitionDuration,
+              transitionDelay: isRebuilding ? '0.1s' : '0.1s',
+              zIndex: 20
+            }}
+          >
+            <img 
+              src={logoSrc} 
+              alt="Logo Piece" 
+              className="absolute object-cover w-[200%] h-[200%]" 
+              style={{
+                top: 0,
+                left: '-100%',
+                clipPath: 'polygon(50% 0, 100% 0, 100% 50%, 50% 50%)'
+              }}
+            />
+          </div>
+          
+          {/* Bottom Left Piece */}
+          <div 
+            ref={bottomLeftRef}
+            className="absolute w-1/2 h-1/2 overflow-hidden transition-all"
+            style={{
+              top: '50%',
+              left: 0,
+              transform: `translate(${positions.bottomLeft.x}px, ${positions.bottomLeft.y}px) rotate(${positions.bottomLeft.rotate}deg)`,
+              transitionDuration,
+              transitionDelay: isRebuilding ? '0.2s' : '0.15s',
+              zIndex: 30
+            }}
+          >
+            <img 
+              src={logoSrc} 
+              alt="Logo Piece" 
+              className="absolute object-cover w-[200%] h-[200%]" 
+              style={{
+                top: '-100%',
+                left: 0,
+                clipPath: 'polygon(0 50%, 50% 50%, 50% 100%, 0 100%)'
+              }}
+            />
+          </div>
+          
+          {/* Bottom Right Piece */}
+          <div 
+            ref={bottomRightRef}
+            className="absolute w-1/2 h-1/2 overflow-hidden transition-all"
+            style={{
+              top: '50%',
+              left: '50%',
+              transform: `translate(${positions.bottomRight.x}px, ${positions.bottomRight.y}px) rotate(${positions.bottomRight.rotate}deg)`,
+              transitionDuration,
+              transitionDelay: isRebuilding ? '0.3s' : '0.2s',
+              zIndex: 40
+            }}
+          >
+            <img 
+              src={logoSrc} 
+              alt="Logo Piece" 
+              className="absolute object-cover w-[200%] h-[200%]" 
+              style={{
+                top: '-100%',
+                left: '-100%',
+                clipPath: 'polygon(50% 50%, 100% 50%, 100% 100%, 50% 100%)'
+              }}
+            />
+          </div>
+          
+          {/* Click hint */}
+          {(animationPhase === 'pieces' && !isMobile) && (
+            <div className="absolute top-full left-1/2 -translate-x-1/2 mt-4 text-xs text-gray-500 whitespace-nowrap">
+              Clique para montar
+            </div>
+          )}
+        </div>
+      );
+    }
+    
+    return null;
+  };
 
   return (
     <div ref={heroRef} className="bg-white relative overflow-hidden">
@@ -213,18 +409,7 @@ export const Hero: React.FC = () => {
         <div className="max-w-3xl mx-auto text-center">
           <div className="flex justify-center mb-6 animate-on-scroll">
             <div className="relative">
-              <img 
-                ref={logoRef}
-                src="/lovable-uploads/35f90851-3845-49d7-bf24-cbdccf2974b6.png" 
-                alt="JimmyDev Logo" 
-                className="h-20 sm:h-24 md:h-32 lg:h-40 w-auto transition-transform duration-300"
-                style={{ 
-                  transformStyle: 'preserve-3d',
-                  backfaceVisibility: 'hidden',
-                  borderRadius: '20%',
-                  transform: isMobile ? 'perspective(1200px)' : 'none',
-                }}
-              />
+              {renderLogo()}
             </div>
           </div>
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6 animate-on-scroll" style={{animationDelay: '200ms'}}>
