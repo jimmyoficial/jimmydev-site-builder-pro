@@ -1,4 +1,3 @@
-
 /* Device frame styling - Enhanced for better 3D effect */
 .device-frame {
   perspective: 1200px;
@@ -505,4 +504,244 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* Interactive website elements - enhanced interactions */
+.interactive-btn {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.interactive-btn:after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1) translate(-50%, -50%);
+  transform-origin: 50% 50%;
+}
+
+.interactive-btn:active:after {
+  opacity: 0.3;
+  transform: scale(20) translate(-50%, -50%);
+  transition: transform 0.5s, opacity 1s;
+}
+
+/* Website navigation hover effects */
+.nav-link {
+  position: relative;
+}
+
+.nav-link:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: currentColor;
+  transform-origin: bottom right;
+  transition: transform 0.3s ease-out;
+}
+
+.nav-link:hover:after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+/* Card hover effects */
+.website-card {
+  transition: all 0.3s ease;
+}
+
+.website-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Featured image zoom effect */
+.featured-image {
+  overflow: hidden;
+}
+
+.featured-image img {
+  transition: transform 0.5s ease;
+}
+
+.featured-image:hover img {
+  transform: scale(1.05);
+}
+
+/* Form input focus effects */
+.form-input {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.2);
+}
+
+/* Mobile menu animation */
+.mobile-menu {
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+}
+
+.mobile-menu.active {
+  transform: translateX(0);
+}
+
+/* Better website preview container */
+.website-preview-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.website-preview-container:hover {
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Browser chrome styling */
+.browser-chrome {
+  background: linear-gradient(to bottom, #f0f0f0, #e0e0e0);
+  border-bottom: 1px solid #d0d0d0;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+}
+
+.browser-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.browser-button {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.browser-button-red {
+  background-color: #ff5f57;
+}
+
+.browser-button-yellow {
+  background-color: #ffbd2e;
+}
+
+.browser-button-green {
+  background-color: #28ca41;
+}
+
+.browser-address-bar {
+  margin-left: 16px;
+  background-color: white;
+  border-radius: 4px;
+  height: 24px;
+  flex-grow: 1;
+  max-width: 70%;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  font-size: 12px;
+  color: #666;
+  border: 1px solid #ccc;
+}
+
+/* Website content wrapper */
+.website-content {
+  height: calc(100% - 36px);
+  overflow-y: auto;
+  background-color: white;
+}
+
+/* Improved scrollbar for website preview */
+.website-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.website-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.website-content::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.website-content::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}
+
+/* Website menu animations */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.website-dropdown {
+  animation: fadeInDown 0.3s ease forwards;
+}
+
+/* Tooltip styling */
+.website-tooltip {
+  position: relative;
+}
+
+.website-tooltip-text {
+  visibility: hidden;
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0,0,0,0.8);
+  color: white;
+  text-align: center;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.website-tooltip:hover .website-tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Add realistic box shadows */
+.realistic-shadow {
+  box-shadow: 
+    0 2px 4px rgba(0,0,0,0.05),
+    0 5px 10px rgba(0,0,0,0.05),
+    0 15px 20px rgba(0,0,0,0.05);
+  transition: box-shadow 0.3s ease;
+}
+
+.realistic-shadow:hover {
+  box-shadow: 
+    0 5px 10px rgba(0,0,0,0.08),
+    0 10px 20px rgba(0,0,0,0.06),
+    0 20px 30px rgba(0,0,0,0.06);
 }
