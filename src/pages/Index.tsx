@@ -3,12 +3,15 @@ import React, { useEffect } from 'react';
 import { Layout } from '@/components/Layout';
 import { Hero } from '@/components/Hero';
 import { Services } from '@/components/Services';
+import { TemplateGallery } from '@/components/TemplateGallery';
 import { AppSimulator } from '@/components/AppSimulator';
 import { WebsiteSimulator } from '@/components/WebsiteSimulator';
+import { WhatsAppAutomation } from '@/components/WhatsAppAutomation';
 import { Differentials } from '@/components/Differentials';
 import { FaqSection } from '@/components/FaqSection';
 import { IntermediateCta, FinalCta } from '@/components/CallToAction';
 import { SocialProof } from '@/components/SocialProof';
+import { EnhancedVisuals } from '@/components/EnhancedVisuals';
 
 const Index = () => {
   // Function to handle scroll animations
@@ -47,9 +50,14 @@ const Index = () => {
   return (
     <Layout>
       <Hero />
+      <EnhancedVisuals />
       <Services />
-      <WebsiteSimulator />
-      <AppSimulator />
+      <TemplateGallery />
+      <div id="simulators">
+        <WebsiteSimulator />
+        <AppSimulator />
+      </div>
+      <WhatsAppAutomation />
       <SocialProof />
       <Differentials />
       <IntermediateCta />

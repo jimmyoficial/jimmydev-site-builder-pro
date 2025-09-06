@@ -278,6 +278,60 @@
     opacity: 0.7;
   }
 
+  /* Enhanced animations for new components */
+  @keyframes gradient-x {
+    0%, 100% {
+      background-size: 200% 200%;
+      background-position: left center;
+    }
+    50% {
+      background-size: 200% 200%;
+      background-position: right center;
+    }
+  }
+
+  @keyframes scale-in {
+    0% {
+      transform: scale(0.9);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  .animate-gradient-x {
+    animation: gradient-x 3s ease infinite;
+  }
+
+  .animate-scale-in {
+    animation: scale-in 0.3s ease-out;
+  }
+
+  .bg-size-200 {
+    background-size: 200% 200%;
+  }
+
+  /* Enhanced hover effects */
+  .card-hover-enhanced {
+    @apply transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 hover:scale-105;
+  }
+
+  /* Floating animations */
+  @keyframes float-gentle {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+
+  .animate-float-gentle {
+    animation: float-gentle 3s ease-in-out infinite;
+  }
+
   /* 3D Cube with mobile optimizations */
   .cube {
     width: 80px;
