@@ -5,7 +5,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useAuth, usePermissions } from '@/contexts/AuthContext';
+import { useToast } from '@/hooks/use-toast';
 import { 
   Calculator,
   FileText,
@@ -19,7 +22,10 @@ import {
   Bot,
   Plus,
   Trash2,
-  DollarSign
+  DollarSign,
+  Loader2,
+  AlertCircle,
+  Settings
 } from 'lucide-react';
 
 interface QuoteItem {
@@ -54,8 +60,12 @@ const serviceTypes = [
 ];
 
 export const SalesPanel: React.FC = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { user, isAuthenticated, login, logout, updateUser } = useAuth();
+  const permissions = usePermissions();
+  const { toast } = useToast();
   const [loginData, setLoginData] = useState({ email: '', password: '' });
+  const [isLoading, setIsLoading] = useState(false);
+  const [loginError, setLoginError] = useState('');
   const [currentQuote, setCurrentQuote] = useState<Quote>({
     id: '',
     clientName: '',
@@ -70,18 +80,52 @@ export const SalesPanel: React.FC = () => {
   });
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [sellerInfo, setSellerInfo] = useState({
-    name: 'João Vendedor',
-    email: 'joao@empresa.com',
-    company: 'JimmyDev Solutions',
+    name: user?.name || '',
+    email: user?.email || '',
+    company: user?.company || '',
     logo: ''
   });
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulated login - in production this would validate credentials
-    if (loginData.email && loginData.password) {
-      setIsLoggedIn(true);
+    setIsLoading(true);
+    setLoginError('');
+    
+    try {
+      const success = await login(loginData.email, loginData.password);
+      
+      if (success) {
+        toast({
+          title: "Login realizado com sucesso!",
+          description: `Bem-vindo, ${loginData.email}`,
+        });
+        setLoginData({ email: '', password: '' });
+      } else {
+        setLoginError('Email ou senha incorretos. Tente: admin@jimmydev.com / admin123');
+        toast({
+          title: "Erro no login",
+          description: "Credenciais inválidas",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      setLoginError('Erro interno. Tente novamente.');
+      toast({
+        title: "Erro no login",
+        description: "Erro interno do sistema",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
     }
+  };
+  
+  const handleLogout = () => {
+    logout();
+    toast({
+      title: "Logout realizado",
+      description: "Você foi desconectado com sucesso",
+    });
   };
 
   const addQuoteItem = (serviceType: string) => {
@@ -179,7 +223,7 @@ export const SalesPanel: React.FC = () => {
     alert(`Orçamento enviado para ${currentQuote.clientEmail} via WhatsApp e e-mail!`);
   };
 
-  if (!isLoggedIn) {
+  if (!isAuthenticated) {
     return (
       <section className="section-padding bg-gradient-to-br from-primary/5 to-secondary/5">
         <div className="container-custom max-w-md mx-auto">
@@ -195,6 +239,12 @@ export const SalesPanel: React.FC = () => {
             </CardHeader>
             <CardContent>
               <form onSubmit={handleLogin} className="space-y-4">
+                {loginError && (
+                  <div className="flex items-center gap-2 p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
+                    <AlertCircle size={16} />
+                    <span>{loginError}</span>
+                  </div>
+                )}
                 <div>
                   <Label htmlFor="email">E-mail</Label>
                   <Input
@@ -204,6 +254,7 @@ export const SalesPanel: React.FC = () => {
                     onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
                     placeholder="seu@email.com"
                     required
+                    disabled={isLoading}
                   />
                 </div>
                 <div>
@@ -215,12 +266,28 @@ export const SalesPanel: React.FC = () => {
                     onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
                     placeholder="••••••••"
                     required
+                    disabled={isLoading}
                   />
                 </div>
-                <Button type="submit" className="w-full">
-                  Entrar
+                <Button type="submit" className="w-full" disabled={isLoading}>
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Entrando...
+                    </>
+                  ) : (
+                    'Entrar'
+                  )}
                 </Button>
               </form>
+              <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
+                <p className="text-sm text-blue-800 font-medium mb-2">Contas de demonstração:</p>
+                <div className="text-xs text-blue-700 space-y-1">
+                  <div><strong>Admin:</strong> admin@jimmydev.com / admin123</div>
+                  <div><strong>Vendedor:</strong> vendedor@jimmydev.com / vendedor123</div>
+                  <div><strong>Cliente:</strong> demo@cliente.com / demo123</div>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </div>
@@ -234,18 +301,30 @@ export const SalesPanel: React.FC = () => {
         <div className="flex justify-between items-center mb-8">
           <div>
             <h2 className="text-3xl font-bold">Painel do Vendedor</h2>
-            <p className="text-muted-foreground">Bem-vindo, {sellerInfo.name}</p>
+            <p className="text-muted-foreground">Bem-vindo, {user?.name}</p>
+            <div className="flex items-center gap-2 mt-1">
+              <Badge variant={user?.role === 'admin' ? 'default' : 'secondary'}>
+                {user?.role === 'admin' ? 'Administrador' : 
+                 user?.role === 'seller' ? 'Vendedor' : 'Visualizador'}
+              </Badge>
+              <span className="text-sm text-muted-foreground">• {user?.company}</span>
+            </div>
           </div>
-          <Button variant="outline" onClick={() => setIsLoggedIn(false)}>
+          <Button variant="outline" onClick={handleLogout}>
             Sair
           </Button>
         </div>
 
         <Tabs defaultValue="quote" className="space-y-6">
           <TabsList>
-            <TabsTrigger value="quote">Novo Orçamento</TabsTrigger>
+            {permissions.canCreateQuotes && (
+              <TabsTrigger value="quote">Novo Orçamento</TabsTrigger>
+            )}
             <TabsTrigger value="history">Histórico</TabsTrigger>
             <TabsTrigger value="settings">Configurações</TabsTrigger>
+            {permissions.canManageUsers && (
+              <TabsTrigger value="users">Usuários</TabsTrigger>
+            )}
           </TabsList>
 
           <TabsContent value="quote" className="space-y-6">
@@ -403,18 +482,24 @@ export const SalesPanel: React.FC = () => {
 
             {/* Actions */}
             <div className="flex gap-4">
-              <Button onClick={saveQuote} variant="outline">
-                <FileText size={16} className="mr-2" />
-                Salvar Rascunho
-              </Button>
-              <Button onClick={generatePDF} variant="outline">
-                <Download size={16} className="mr-2" />
-                Gerar PDF
-              </Button>
-              <Button onClick={sendQuote} disabled={!currentQuote.clientEmail}>
-                <Send size={16} className="mr-2" />
-                Enviar Orçamento
-              </Button>
+              {permissions.canCreateQuotes && (
+                <Button onClick={saveQuote} variant="outline">
+                  <FileText size={16} className="mr-2" />
+                  Salvar Rascunho
+                </Button>
+              )}
+              {permissions.canExportPDF && (
+                <Button onClick={generatePDF} variant="outline">
+                  <Download size={16} className="mr-2" />
+                  Gerar PDF
+                </Button>
+              )}
+              {permissions.canSendQuotes && (
+                <Button onClick={sendQuote} disabled={!currentQuote.clientEmail}>
+                  <Send size={16} className="mr-2" />
+                  Enviar Orçamento
+                </Button>
+              )}
             </div>
           </TabsContent>
 
@@ -464,48 +549,101 @@ export const SalesPanel: React.FC = () => {
           <TabsContent value="settings">
             <Card>
               <CardHeader>
-                <CardTitle>Configurações do Vendedor</CardTitle>
+                <CardTitle>Configurações</CardTitle>
+                <CardDescription>
+                  Gerencie suas configurações de vendas
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="sellerName">Nome</Label>
-                    <Input
-                      id="sellerName"
-                      value={sellerInfo.name}
-                      onChange={(e) => setSellerInfo({ ...sellerInfo, name: e.target.value })}
-                    />
+                    <Label>Nome da Empresa</Label>
+                    <Input value={user?.company} readOnly />
                   </div>
                   <div>
-                    <Label htmlFor="sellerEmail">E-mail</Label>
-                    <Input
-                      id="sellerEmail"
-                      value={sellerInfo.email}
-                      onChange={(e) => setSellerInfo({ ...sellerInfo, email: e.target.value })}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="sellerCompany">Empresa</Label>
-                    <Input
-                      id="sellerCompany"
-                      value={sellerInfo.company}
-                      onChange={(e) => setSellerInfo({ ...sellerInfo, company: e.target.value })}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="sellerLogo">Logo da Empresa (URL)</Label>
-                    <Input
-                      id="sellerLogo"
-                      value={sellerInfo.logo}
-                      onChange={(e) => setSellerInfo({ ...sellerInfo, logo: e.target.value })}
-                      placeholder="https://exemplo.com/logo.png"
-                    />
+                    <Label>Telefone</Label>
+                    <Input value={user?.phone} readOnly />
                   </div>
                 </div>
-                <Button>Salvar Configurações</Button>
+                <div>
+                  <Label>E-mail</Label>
+                  <Input value={user?.email} readOnly />
+                </div>
+                <div>
+                  <Label>Assinatura do E-mail</Label>
+                  <Textarea 
+                    value={user?.signature} 
+                    readOnly
+                    rows={3}
+                  />
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
+
+          {permissions.canManageUsers && (
+            <TabsContent value="users">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Gerenciamento de Usuários</CardTitle>
+                  <CardDescription>
+                    Gerencie usuários e permissões do sistema
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <h3 className="text-lg font-semibold">Usuários Ativos</h3>
+                      <Button size="sm">
+                        <Plus size={16} className="mr-2" />
+                        Adicionar Usuário
+                      </Button>
+                    </div>
+                    <div className="border rounded-lg">
+                      <div className="grid grid-cols-4 gap-4 p-4 border-b font-medium">
+                        <div>Nome</div>
+                        <div>E-mail</div>
+                        <div>Role</div>
+                        <div>Ações</div>
+                      </div>
+                      <div className="divide-y">
+                        <div className="grid grid-cols-4 gap-4 p-4 items-center">
+                          <div>Admin JimmyDev</div>
+                          <div>admin@jimmydev.com</div>
+                          <div><Badge>Administrador</Badge></div>
+                          <div>
+                            <Button size="sm" variant="outline">
+                              Editar
+                            </Button>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-4 gap-4 p-4 items-center">
+                          <div>Vendedor Demo</div>
+                          <div>vendedor@jimmydev.com</div>
+                          <div><Badge variant="secondary">Vendedor</Badge></div>
+                          <div>
+                            <Button size="sm" variant="outline">
+                              Editar
+                            </Button>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-4 gap-4 p-4 items-center">
+                          <div>Cliente Demo</div>
+                          <div>demo@cliente.com</div>
+                          <div><Badge variant="outline">Visualizador</Badge></div>
+                          <div>
+                            <Button size="sm" variant="outline">
+                              Editar
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          )}
         </Tabs>
       </div>
     </section>

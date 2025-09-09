@@ -29,6 +29,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             <a href="#simulator" className="text-neutral hover:text-primary transition-colors">Simulador</a>
             <a href="#differentials" className="text-neutral hover:text-primary transition-colors">Diferenciais</a>
             <a href="/faq" className="text-neutral hover:text-primary transition-colors">FAQ</a>
+            <a href="/vendas" className="text-neutral hover:text-primary transition-colors">Painel</a>
             <a href="#contact" className="btn-primary">Contato</a>
           </nav>
           <button className="md:hidden text-neutral">

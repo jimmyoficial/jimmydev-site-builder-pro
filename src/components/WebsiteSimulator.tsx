@@ -38,7 +38,7 @@ interface WebsiteConfig {
 type WebsiteTemplate = 'institutional' | 'ecommerce' | 'dashboard' | 'blog' | 'portfolio';
 
 const defaultConfig: WebsiteConfig = {
-  title: 'JimmyDev Website',
+  title: 'JimmyDev - Soluções Inteligentes',
   logo: null,
   primaryColor: '#1A2B47',
   secondaryColor: '#ED422A',
@@ -2469,7 +2469,7 @@ export const WebsiteSimulator: React.FC = () => {
                 value={config.title}
                 onChange={(e) => setConfig({...config, title: e.target.value})}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="JimmyDev Website"
+                placeholder="JimmyDev - Soluções Inteligentes"
               />
             </div>
             
